@@ -34,7 +34,6 @@ variable "stage" {
   description = "Stage (e.g. `prod`, `dev`, `staging`)"
 }
 
-
 variable "zone_name" {
   type        = "string"
   description = "DNS zone name"
@@ -90,9 +89,14 @@ module "label" {
   delimiter  = "${var.delimiter}"
   attributes = "${var.attributes}"
   tags       = "${var.tags}"
-  enabled    = "${var.enabled}"
+  enabled    = "true"
 }
 
+# global data sources
+#--------------------------------------------------------------
+data "aws_region" "current" {}
+
+data "aws_availability_zones" "available" {}
 
 data "aws_route53_zone" "default" {
   name = "${var.zone_name}"
