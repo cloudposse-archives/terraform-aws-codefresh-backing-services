@@ -117,7 +117,7 @@ resource "random_string" "postgres_admin_password" {
 
 resource "aws_ssm_parameter" "aurora_postgres_database_name" {
   count       = "${local.postgres_cluster_enabled ? 1 : 0}"
-  name        = "${format(var.chamber_parameter_name, local.chamber_service, "aurora_postgres_database_name")}"
+  name        = "${format(var.chamber_format, local.chamber_service, "aurora_postgres_database_name")}"
   value       = "${module.aurora_postgres.name}"
   description = "Aurora Postgres Database Name"
   type        = "String"
@@ -126,7 +126,7 @@ resource "aws_ssm_parameter" "aurora_postgres_database_name" {
 
 resource "aws_ssm_parameter" "aurora_postgres_master_username" {
   count       = "${local.postgres_cluster_enabled ? 1 : 0}"
-  name        = "${format(var.chamber_parameter_name, local.chamber_service, "aurora_postgres_master_username")}"
+  name        = "${format(var.chamber_format, local.chamber_service, "aurora_postgres_master_username")}"
   value       = "${module.aurora_postgres.user}"
   description = "Aurora Postgres Username for the master DB user"
   type        = "String"
@@ -135,7 +135,7 @@ resource "aws_ssm_parameter" "aurora_postgres_master_username" {
 
 resource "aws_ssm_parameter" "aurora_postgres_master_password" {
   count       = "${local.postgres_cluster_enabled ? 1 : 0}"
-  name        = "${format(var.chamber_parameter_name, local.chamber_service, "aurora_postgres_master_password")}"
+  name        = "${format(var.chamber_format, local.chamber_service, "aurora_postgres_master_password")}"
   value       = "${module.aurora_postgres.password}"
   description = "Aurora Postgres Password for the master DB user"
   type        = "SecureString"
@@ -145,7 +145,7 @@ resource "aws_ssm_parameter" "aurora_postgres_master_password" {
 
 resource "aws_ssm_parameter" "aurora_postgres_master_hostname" {
   count       = "${local.postgres_cluster_enabled ? 1 : 0}"
-  name        = "${format(var.chamber_parameter_name, local.chamber_service, "aurora_postgres_master_hostname")}"
+  name        = "${format(var.chamber_format, local.chamber_service, "aurora_postgres_master_hostname")}"
   value       = "${module.aurora_postgres.master_host}"
   description = "Aurora Postgres DB Master hostname"
   type        = "String"
@@ -154,7 +154,7 @@ resource "aws_ssm_parameter" "aurora_postgres_master_hostname" {
 
 resource "aws_ssm_parameter" "aurora_postgres_replicas_hostname" {
   count       = "${local.postgres_cluster_enabled ? 1 : 0}"
-  name        = "${format(var.chamber_parameter_name, local.chamber_service, "aurora_postgres_replicas_hostname")}"
+  name        = "${format(var.chamber_format, local.chamber_service, "aurora_postgres_replicas_hostname")}"
   value       = "${module.aurora_postgres.replicas_host}"
   description = "Aurora Postgres DB Replicas hostname"
   type        = "String"
@@ -163,7 +163,7 @@ resource "aws_ssm_parameter" "aurora_postgres_replicas_hostname" {
 
 resource "aws_ssm_parameter" "aurora_postgres_cluster_name" {
   count       = "${local.postgres_cluster_enabled ? 1 : 0}"
-  name        = "${format(var.chamber_parameter_name, local.chamber_service, "aurora_postgres_cluster_name")}"
+  name        = "${format(var.chamber_format, local.chamber_service, "aurora_postgres_cluster_name")}"
   value       = "${module.aurora_postgres.cluster_name}"
   description = "Aurora Postgres DB Cluster Identifier"
   type        = "String"
