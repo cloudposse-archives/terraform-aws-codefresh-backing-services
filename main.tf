@@ -34,6 +34,34 @@ variable "stage" {
   description = "Stage (e.g. `prod`, `dev`, `staging`)"
 }
 
+
+variable "zone_name" {
+  type        = "string"
+  description = "DNS zone name"
+}
+
+variable "kms_key_id" {
+  type        = "string"
+  default     = ""
+  description = "KMS key id used to encrypt SSM parameters"
+}
+
+variable "chamber_format" {
+  default     = "/%s/%s"
+  description = "Format to store parameters in SSM, for consumption with chamber"
+}
+
+variable "chamber_service" {
+  default     = ""
+  description = "`chamber` service name. See [chamber usage](https://github.com/segmentio/chamber#usage) for more details"
+}
+
+variable "overwrite_ssm_parameter" {
+  type        = "string"
+  default     = "true"
+  description = "Whether to overwrite an existing SSM parameter"
+}
+
 variable "delimiter" {
   type        = "string"
   default     = "-"
@@ -50,4 +78,34 @@ variable "tags" {
   type        = "map"
   default     = {}
   description = "Additional tags (e.g. map(`Cluster`,`us-east-1.cloudposse.co`)"
+}
+
+# global modules
+#--------------------------------------------------------------
+module "label" {
+  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.3.5"
+  namespace  = "${var.namespace}"
+  name       = "${var.name}"
+  stage      = "${var.stage}"
+  delimiter  = "${var.delimiter}"
+  attributes = "${var.attributes}"
+  tags       = "${var.tags}"
+  enabled    = "${var.enabled}"
+}
+
+
+data "aws_route53_zone" "default" {
+  name = "${var.zone_name}"
+}
+
+data "aws_kms_key" "chamber_kms_key" {
+  key_id = "${local.kms_key_id}"
+}
+
+# global locals
+#--------------------------------------------------------------
+locals {
+  kms_key_id      = "${length(var.kms_key_id) > 0 ? var.kms_key_id : format("alias/%s-%s-chamber", var.namespace, var.stage)}"
+  chamber_service = "${var.chamber_service == "" ? basename(pathexpand(path.module)) : var.chamber_service}"
+  zone_id         = "${data.aws_route53_zone.default.zone_id}"
 }
