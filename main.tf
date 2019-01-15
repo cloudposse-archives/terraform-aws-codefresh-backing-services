@@ -79,6 +79,17 @@ variable "tags" {
   description = "Additional tags (e.g. map(`Cluster`,`us-east-1.cloudposse.co`)"
 }
 
+variable "subnet_ids" {
+  type        = "list"
+  default     = []
+  description = "A list of subnet IDs to launch the CodeFresh backing services in"
+}
+
+variable "vpc_id" {
+  type        = "string"
+  description = "VPC ID for the CodeFresh backing services"
+}
+
 # global modules
 #--------------------------------------------------------------
 module "label" {

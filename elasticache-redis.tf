@@ -106,8 +106,8 @@ module "elasticache_redis" {
   name                         = "${var.redis_name}"
   zone_id                      = "${local.zone_id}"
   security_groups              = ["${module.kops_metadata.nodes_security_group_id}"]
-  vpc_id                       = "${module.vpc.vpc_id}"
-  subnets                      = ["${module.subnets.private_subnet_ids}"]
+  vpc_id                       = "${var.vpc_id}"
+  subnets                      = ["${var.subnet_ids}"]
   maintenance_window           = "${var.redis_maintenance_window}"
   cluster_size                 = "${var.redis_cluster_size}"
   auth_token                   = "${local.redis_auth_token}"

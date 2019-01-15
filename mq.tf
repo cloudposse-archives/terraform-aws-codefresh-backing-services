@@ -164,7 +164,7 @@ resource "aws_mq_broker" "default" {
   apply_immediately          = "${var.mq_apply_immediately}"
   publicly_accessible        = "${var.mq_publicly_accessible}"
   security_groups            = ["${module.kops_metadata.nodes_security_group_id}"]
-  subnet_ids                 = ["${module.subnets.private_subnet_ids}"]
+  subnet_ids                 = ["${var.subnet_ids}"]
 
   logs {
     general = "${var.mq_general_log}"
