@@ -108,11 +108,10 @@ variable "mq_config_template_path" {
   default     = ""
 }
 
-# mq data
-#--------------------------------------------------------------
-data "template_file" "default" {
-  count    = "${local.mq_enabled ? 1 : 0}"
-  template = "${file(local.mq_config_template_path)}"
+variable "mq_subnet_ids" {
+  type        = "list"
+  default     = []
+  description = "A list of subnet IDs to launch the CodeFresh backing services in"
 }
 
 # mq locals
@@ -139,52 +138,6 @@ resource "random_string" "mq_admin_password" {
   special = true
 }
 
-resource "aws_mq_configuration" "default" {
-  count          = "${local.mq_enabled ? 1 : 0}"
-  name           = "${var.mq_configuration_name}"
-  engine_type    = "${var.mq_engine_type}"
-  engine_version = "${var.mq_engine_version}"
-  data           = "${data.template_file.default.rendered}"
-}
-
-resource "aws_mq_broker" "default" {
-  count       = "${local.mq_enabled ? 1 : 0}"
-  broker_name = "${var.mq_broker_name}"
-
-  configuration {
-    id       = "${join("", aws_mq_configuration.default.*.id)}"
-    revision = "${join("", aws_mq_configuration.default.*.latest_revision)}"
-  }
-
-  deployment_mode            = "${var.mq_deployment_mode}"
-  engine_type                = "${var.mq_engine_type}"
-  engine_version             = "${var.mq_engine_version}"
-  host_instance_type         = "${var.mq_host_instance_type}"
-  auto_minor_version_upgrade = "${var.mq_auto_minor_version_upgrade}"
-  apply_immediately          = "${var.mq_apply_immediately}"
-  publicly_accessible        = "${var.mq_publicly_accessible}"
-  security_groups            = ["${module.kops_metadata.nodes_security_group_id}"]
-  subnet_ids                 = ["${var.subnet_ids}"]
-
-  logs {
-    general = "${var.mq_general_log}"
-    audit   = "${var.mq_audit_log}"
-  }
-
-  maintenance_window_start_time {
-    day_of_week = "${var.mq_maintenance_day_of_week}"
-    time_of_day = "${var.mq_maintenance_time_of_day}"
-    time_zone   = "${var.mq_maintenance_time_zone}"
-  }
-
-  user {
-    username       = "${local.mq_admin_user}"
-    password       = "${local.mq_admin_password}"
-    console_access = true
-    groups         = ["admin"]
-  }
-}
-
 resource "aws_ssm_parameter" "mq_master_username" {
   count       = "${local.mq_enabled ? 1 : 0}"
   name        = "${format(var.chamber_parameter_name, local.chamber_service, "mq_admin_username")}"
@@ -206,26 +159,62 @@ resource "aws_ssm_parameter" "mq_master_password" {
 
 # mq modules
 #--------------------------------------------------------------
-module "dns_master" {
-  source    = "git::https://github.com/cloudposse/terraform-aws-route53-cluster-hostname.git?ref=tags/0.2.5"
-  namespace = "${var.namespace}"
-  name      = "active.${var.mq_broker_name}"
-  stage     = "${var.stage}"
-  zone_id   = "${local.zone_id}"
-  records   = ["${coalescelist(aws_mq_broker.default.*.instances.0.endpoints.0, list(""))}"]
-  enabled   = "${local.mq_enabled && length(local.zone_id) > 0 ? "true" : "false"}"
+module "amq" {
+  source                     = "git::https://github.com/cloudposse/terraform-aws-mq-broker.git?ref=initial_implementation"
+  namespace                  = "${var.namespace}"
+  stage                      = "${var.stage}"
+  name                       = "${var.name}"
+  broker_name                = "${var.mq_broker_name}"
+  apply_immediately          = "${var.mq_apply_immediately}"
+  enabled                    = "${var.mq_enabled}"
+  auto_minor_version_upgrade = "${var.mq_auto_minor_version_upgrade}"
+  deployment_mode            = "${var.mq_deployment_mode}"
+  engine_type                = "${var.mq_engine_type}"
+  engine_version             = "${var.mq_engine_version}"
+  configuration_name         = "${var.mq_configuration_name}"
+  host_instance_type         = "${var.mq_host_instance_type}"
+  publicly_accessible        = "${var.mq_publicly_accessible}"
+  general_log                = "${var.mq_general_log}"
+  audit_log                  = "${var.mq_audit_log}"
+  maintenance_day_of_week    = "${var.mq_maintenance_day_of_week}"
+  maintenance_time_of_day    = "${var.mq_maintenance_time_of_day}"
+  maintenance_time_zone      = "${var.mq_maintenance_time_zone}"
+  config_template_path       = "${var.mq_config_template_path}"
+  vpc_id                     = "${var.vpc_id}"
+  subnet_ids                 = ["${var.mq_subnet_ids}"]
+  security_groups            = ["${var.node_security_groups}"]
 }
 
 # mq outputs
 #--------------------------------------------------------------
 output "mq_broker_id" {
-  value = "${join("", aws_mq_broker.default.*.id)}"
+  value = "${module.amq.broker_id}"
 }
 
 output "mq_broker_arn" {
-  value = "${join("", aws_mq_broker.default.*.arn)}"
+  value = "${module.amq.broker_arn}"
 }
 
-output "mq_broker_instances" {
-  value = "${join("", aws_mq_broker.default.*.instances)}"
+output "mq_primary_console_url" {
+  value = "${module.amq.primary_console_url}"
+}
+
+output "mq_primary_ampq_ssl_endpoint" {
+  value = "${module.amq.primary_ampq_ssl_endpoint}"
+}
+
+output "mq_primary_ip_address" {
+  value = "${module.amq.primary_ip_address}"
+}
+
+output "mq_secondary_console_url" {
+  value = "${module.amq.secondary_console_url}"
+}
+
+output "mq_secondary_ampq_ssl_endpoint" {
+  value = "${module.amq.secondary_ampq_ssl_endpoint}"
+}
+
+output "mq_secondary_ip_address" {
+  value = "${module.amq.secondary_ip_address}"
 }
