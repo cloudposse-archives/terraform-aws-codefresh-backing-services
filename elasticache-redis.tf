@@ -1,5 +1,3 @@
-# elasticache-redis variables
-#--------------------------------------------------------------
 variable "redis_name" {
   type        = "string"
   default     = "redis"
@@ -72,15 +70,11 @@ variable "redis_apply_immediately" {
   description = "Whether to apply changes immediately or during the next maintenance_window"
 }
 
-# elasticache-redis locals
-#--------------------------------------------------------------
 locals {
   redis_family     = "${format("redis%s", join(".", slice(split(".", var.redis_engine_version),0,2)))}"
   redis_auth_token = "${length(var.redis_auth_token) > 0 ? var.redis_auth_token : join("", random_string.redis_auth_token.*.result)}"
 }
 
-# elasticache-redis resources
-#--------------------------------------------------------------
 resource "random_string" "redis_auth_token" {
   count   = "${var.redis_cluster_enabled ? 1 : 0}"
   length  = 16
@@ -97,8 +91,6 @@ resource "aws_ssm_parameter" "redis_auth_token" {
   overwrite   = "${var.overwrite_ssm_parameter}"
 }
 
-# elasticache-redis modules
-#--------------------------------------------------------------
 module "elasticache_redis" {
   source                       = "git::https://github.com/cloudposse/terraform-aws-elasticache-redis.git?ref=tags/0.9.0"
   namespace                    = "${var.namespace}"
@@ -126,16 +118,17 @@ module "elasticache_redis" {
   parameter                    = "${var.redis_params}"
 }
 
-# elasticache-redis outputs
-#--------------------------------------------------------------
 output "elasticache_redis_id" {
-  value = "${module.elasticache_redis.id}"
+  value       = "${module.elasticache_redis.id}"
+  description = "Elasticache Redis cluster ID"
 }
 
 output "elasticache_redis_security_group_id" {
-  value = "${module.elasticache_redis.security_group_id}"
+  value       = "${module.elasticache_redis.security_group_id}"
+  description = "Elasticache Redis security group ID"
 }
 
 output "elasticache_redis_host" {
-  value = "${module.elasticache_redis.host}"
+  value       = "${module.elasticache_redis.host}"
+  description = "Elasticache Redis host"
 }

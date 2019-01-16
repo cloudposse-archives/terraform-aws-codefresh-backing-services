@@ -1,5 +1,3 @@
-# terraform
-#--------------------------------------------------------------
 terraform {
   required_version = ">= 0.11.2"
 
@@ -12,8 +10,6 @@ provider "aws" {
   }
 }
 
-# global variables
-#--------------------------------------------------------------
 variable "aws_assume_role_arn" {
   type = "string"
 }
@@ -82,7 +78,7 @@ variable "tags" {
 variable "node_security_groups" {
   type        = "list"
   default     = []
-  description = "List of Kops node security groups to be allowed to connect to the CodeFresh backing infra"
+  description = "List of security groups to be allowed to connect to the CodeFresh backing services"
 }
 
 variable "subnet_ids" {
@@ -96,8 +92,6 @@ variable "vpc_id" {
   description = "VPC ID for the CodeFresh backing services"
 }
 
-# global modules
-#--------------------------------------------------------------
 module "label" {
   source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.3.5"
   namespace  = "${var.namespace}"
@@ -106,11 +100,8 @@ module "label" {
   delimiter  = "${var.delimiter}"
   attributes = "${var.attributes}"
   tags       = "${var.tags}"
-  enabled    = "true"
 }
 
-# global data sources
-#--------------------------------------------------------------
 data "aws_region" "current" {}
 
 data "aws_availability_zones" "available" {}
@@ -123,8 +114,6 @@ data "aws_kms_key" "chamber_kms_key" {
   key_id = "${local.kms_key_id}"
 }
 
-# global locals
-#--------------------------------------------------------------
 locals {
   kms_key_id      = "${length(var.kms_key_id) > 0 ? var.kms_key_id : format("alias/%s-%s-chamber", var.namespace, var.stage)}"
   chamber_service = "${var.chamber_service == "" ? basename(pathexpand(path.module)) : var.chamber_service}"

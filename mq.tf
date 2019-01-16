@@ -1,5 +1,3 @@
-# mq variables
-#--------------------------------------------------------------
 variable "mq_apply_immediately" {
   type        = "string"
   description = "Specifies whether any cluster modifications are applied immediately, or during the next maintenance window"
@@ -90,8 +88,6 @@ variable "mq_subnet_ids" {
   description = "A list of subnet IDs to launch the CodeFresh backing services in"
 }
 
-# mq modules
-#--------------------------------------------------------------
 module "amq" {
   source                     = "git::https://github.com/cloudposse/terraform-aws-mq-broker.git?ref=initial_implementation"
   namespace                  = "${var.namespace}"
@@ -117,44 +113,52 @@ module "amq" {
   security_groups            = ["${var.node_security_groups}"]
 }
 
-# mq outputs
-#--------------------------------------------------------------
 output "mq_broker_id" {
-  value = "${module.amq.broker_id}"
+  value       = "${module.amq.broker_id}"
+  description = "AmazonMQ broker ID"
 }
 
 output "mq_broker_arn" {
-  value = "${module.amq.broker_arn}"
+  value       = "${module.amq.broker_arn}"
+  description = "AmazonMQ broker ARN"
 }
 
 output "mq_primary_console_url" {
-  value = "${module.amq.primary_console_url}"
+  value       = "${module.amq.primary_console_url}"
+  description = "AmazonMQ active web console URL"
 }
 
 output "mq_primary_ampq_ssl_endpoint" {
-  value = "${module.amq.primary_ampq_ssl_endpoint}"
+  value       = "${module.amq.primary_ampq_ssl_endpoint}"
+  description = "AmazonMQ primary AMQP+SSL endpoint"
 }
 
 output "mq_primary_ip_address" {
-  value = "${module.amq.primary_ip_address}"
+  value       = "${module.amq.primary_ip_address}"
+  description = "AmazonMQ primary IP address"
 }
 
 output "mq_secondary_console_url" {
-  value = "${module.amq.secondary_console_url}"
+  value       = "${module.amq.secondary_console_url}"
+  description = "AmazonMQ secondary web console URL"
 }
 
 output "mq_secondary_ampq_ssl_endpoint" {
-  value = "${module.amq.secondary_ampq_ssl_endpoint}"
+  value       = "${module.amq.secondary_ampq_ssl_endpoint}"
+  description = "AmazonMQ secondary AMQP+SSL endpoint"
 }
 
 output "mq_secondary_ip_address" {
-  value = "${module.amq.secondary_ip_address}"
+  value       = "${module.amq.secondary_ip_address}"
+  description = "AmazonMQ secondary IP address"
 }
 
 output "mq_admin_username" {
-  value = "${module.amq.admin_username}"
+  value       = "${module.amq.admin_username}"
+  description = "AmazonMQ admin username"
 }
 
 output "mq_application_username" {
-  value = "${module.amq.application_username}"
+  value       = "${module.amq.application_username}"
+  description = "AmazonMQ application username"
 }

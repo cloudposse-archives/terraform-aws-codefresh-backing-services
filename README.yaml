@@ -56,12 +56,11 @@ related:
 
 # Short description of this project
 description: |-
-  Terraform module to provision CodeFresh Enterprise backing services for usage with a kops cluster
+  Terraform module to provision CodeFresh Enterprise backing services
 
 introduction: |-
   The module provisions the following resources:
-  - AWS Aurora primary
-  - AWS Aurora read replica
+  - AWS Aurora cluster
   - AWS Elasticache Redis
   - AWS AmazonMQ (ActiveMQ)
 

@@ -8,7 +8,7 @@
  [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-codefresh-backing-services.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-codefresh-backing-services) [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-codefresh-backing-services.svg)](https://github.com/cloudposse/terraform-aws-codefresh-backing-services/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
 
 
-Terraform module to provision CodeFresh Enterprise backing services for usage with a kops cluster
+Terraform module to provision CodeFresh Enterprise backing services
 
 
 ---
@@ -44,8 +44,7 @@ We literally have [*hundreds of terraform modules*][terraform_modules] that are 
 ## Introduction
 
 The module provisions the following resources:
-- AWS Aurora primary
-- AWS Aurora read replica
+- AWS Aurora cluster
 - AWS Elasticache Redis
 - AWS AmazonMQ (ActiveMQ)
 
@@ -76,20 +75,17 @@ Available targets:
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
 | attributes | Additional attributes (e.g. `1`) | list | `<list>` | no |
-| aws_assume_role_arn | global variables -------------------------------------------------------------- | string | - | yes |
-| chamber_parameter_name |  | string | `/%s/%s` | no |
+| aws_assume_role_arn |  | string | - | yes |
+| chamber_format | Format to store parameters in SSM, for consumption with chamber | string | `/%s/%s` | no |
 | chamber_service | `chamber` service name. See [chamber usage](https://github.com/segmentio/chamber#usage) for more details | string | `` | no |
 | delimiter | Delimiter to be used between `namespace`, `stage`, `name` and `attributes` | string | `-` | no |
 | kms_key_id | KMS key id used to encrypt SSM parameters | string | `` | no |
-| kops_metadata_enabled | Set to false to prevent the module from creating any resources | string | `false` | no |
 | mq_admin_password | Admin password | string | `` | no |
 | mq_admin_user | Admin username | string | `` | no |
 | mq_apply_immediately | Specifies whether any cluster modifications are applied immediately, or during the next maintenance window | string | `true` | no |
 | mq_audit_log | Enables audit logging. User management action made using JMX or the ActiveMQ Web Console is logged | string | `true` | no |
 | mq_auto_minor_version_upgrade | Enables automatic upgrades to new minor versions for brokers, as Apache releases the versions | string | `false` | no |
 | mq_broker_name | The name of the broker | string | `mq` | no |
-| mq_config_template_path | Path to ActiveMQ XML config | string | `` | no |
-| mq_configuration_name | The name of the MQ configuration | string | `mq` | no |
 | mq_deployment_mode | The deployment mode of the broker. Supported: SINGLE_INSTANCE and ACTIVE_STANDBY_MULTI_AZ | string | `ACTIVE_STANDBY_MULTI_AZ` | no |
 | mq_enabled | Set to false to prevent the module from creating any resources | string | `true` | no |
 | mq_engine_type | The type of broker engine. Currently, Amazon MQ supports only ActiveMQ | string | `ActiveMQ` | no |
@@ -100,8 +96,10 @@ Available targets:
 | mq_maintenance_time_of_day | The time, in 24-hour format. e.g. 02:00 | string | `03:00` | no |
 | mq_maintenance_time_zone | The time zone, in either the Country/City format, or the UTC offset format. e.g. CET | string | `UTC` | no |
 | mq_publicly_accessible | Whether to enable connections from applications outside of the VPC that hosts the broker's subnets. | string | `false` | no |
+| mq_subnet_ids | A list of subnet IDs to launch the CodeFresh backing services in | list | `<list>` | no |
 | name | Name  (e.g. `codefresh`) | string | `codefresh` | no |
 | namespace | Namespace (e.g. `eg` or `cp`) | string | - | yes |
+| node_security_groups | List of security groups to be allowed to connect to the CodeFresh backing services | list | `<list>` | no |
 | overwrite_ssm_parameter | Whether to overwrite an existing SSM parameter | string | `true` | no |
 | postgres_admin_password | Postgres password for the admin user | string | `` | no |
 | postgres_admin_user | Postgres admin user name | string | `` | no |
@@ -112,14 +110,11 @@ Available targets:
 | postgres_instance_type | EC2 instance type for Postgres cluster | string | `db.r4.large` | no |
 | postgres_maintenance_window | Weekly time range during which system maintenance can occur, in UTC | string | `sun:03:00-sun:04:00` | no |
 | postgres_name | Name of the application, e.g. `app` or `analytics` | string | `` | no |
-| postgres_replica_cluster_identifier | The cluster identifier | string | `` | no |
-| postgres_replica_cluster_size | Postgres cluster size | string | `2` | no |
-| postgres_replica_enabled | Set to false to prevent the module from creating any resources | string | `true` | no |
-| postgres_replica_instance_type | EC2 instance type for Postgres cluster | string | `db.r4.large` | no |
-| postgres_replica_name | Name of the replica, e.g. `postgres` or `reporting` | string | `` | no |
+| redis_apply_immediately | Whether to apply changes immediately or during the next maintenance_window | string | `true` | no |
+| redis_at_rest_encryption_enabled | Enable Redis encryption at rest | string | `true` | no |
 | redis_auth_token | Auth token for password protecting redis, transit_encryption_enabled must be set to 'true'! Password must be longer than 16 chars | string | `` | no |
 | redis_automatic_failover | Whether to enable automatic_failover | string | `true` | no |
-| redis_cluster_enabled | Set to false to prevent the module from creating any resources | string | `false` | no |
+| redis_cluster_enabled | Set to false to prevent the module from creating any resources | string | `true` | no |
 | redis_cluster_size | Redis cluster size | string | `2` | no |
 | redis_engine_version | Version of Redis engine | string | `3.2.6` | no |
 | redis_instance_type | EC2 instance type for Redis cluster | string | `cache.t2.medium` | no |
@@ -127,10 +122,16 @@ Available targets:
 | redis_name | Redis name | string | `redis` | no |
 | redis_params | A list of Redis parameters to apply. Note that parameters may differ from a Redis family to another | list | `<list>` | no |
 | redis_transit_encryption_enabled | Enable TLS | string | `true` | no |
+| s3_access_key_name | S3 user IAM access key name for storing in SSM. Default to aws_acces_key_id so chamber exports as AWS_ACCESS_KEY_ID, a standard AWS IAM ENV variable | string | `aws_access_key_id` | no |
+| s3_allowed_bucket_actions | List of actions to permit for S3 bucket | list | `<list>` | no |
+| s3_enabled | Set to false to prevent the module from creating any resources | string | `true` | no |
+| s3_secret_key_name | S3 user IAM secret key name for storing in SSM. Default to aws_secret_acces_key so chamber exports as AWS_SECRET_ACCESS_KEY, a standard AWS IAM ENV variable | string | `aws_secret_access_key` | no |
+| s3_user_enabled | Set to `true` to create an S3 user with permission to access the bucket | string | `true` | no |
+| s3_versioning_enabled | Whether to enable versioning on the S3 bucket. | string | `false` | no |
 | stage | Stage (e.g. `prod`, `dev`, `staging`) | string | - | yes |
+| subnet_ids | A list of subnet IDs to launch the CodeFresh backing services in | list | `<list>` | no |
 | tags | Additional tags (e.g. map(`Cluster`,`us-east-1.cloudposse.co`) | map | `<map>` | no |
-| vpc_cidr_block | vpc variables -------------------------------------------------------------- | string | `10.0.0.0/16` | no |
-| vpc_nat_gateway_enabled |  | string | `true` | no |
+| vpc_id | VPC ID for the CodeFresh backing services | string | - | yes |
 | zone_name | DNS zone name | string | - | yes |
 
 ## Outputs
@@ -138,20 +139,31 @@ Available targets:
 | Name | Description |
 |------|-------------|
 | aurora_postgres_cluster_name | Aurora Postgres Cluster Identifier |
-| aurora_postgres_database_name | aurora-postgres outputs -------------------------------------------------------------- |
+| aurora_postgres_database_name | Aurora Postgres Database name |
 | aurora_postgres_master_hostname | Aurora Postgres DB Master hostname |
 | aurora_postgres_master_username | Aurora Postgres Username for the master DB user |
 | aurora_postgres_replicas_hostname | Aurora Postgres Replicas hostname |
-| elasticache_redis_host |  |
-| elasticache_redis_id | elasticache-redis outputs -------------------------------------------------------------- |
-| elasticache_redis_security_group_id |  |
-| mq_broker_arn |  |
-| mq_broker_id | mq resources -------------------------------------------------------------- |
-| mq_broker_instances |  |
-| postgres_replica_endpoint | RDS Cluster replica endpoint |
-| postgres_replica_hostname | aurora-postgres-replica outputs -------------------------------------------------------------- |
-| region | AWS region of backing services |
-| vpc_id | vpc outputs -------------------------------------------------------------- |
+| efs_arn | EFS arn |
+| efs_dns_name | EFS DNS name |
+| efs_host | EFS host |
+| efs_id | EFS ID |
+| efs_mount_target_dns_names | EFS mount target DNS names |
+| efs_mount_target_ids | EFS mount target IDs |
+| efs_mount_target_ips | EFS mount target IPs |
+| efs_network_interface_ids | EFS network interface IDs |
+| elasticache_redis_host | Elasticache Redis host |
+| elasticache_redis_id | Elasticache Redis cluster ID |
+| elasticache_redis_security_group_id | Elasticache Redis security group ID |
+| mq_admin_username | AmazonMQ admin username |
+| mq_application_username | AmazonMQ application username |
+| mq_broker_arn | AmazonMQ broker ARN |
+| mq_broker_id | AmazonMQ broker ID |
+| mq_primary_ampq_ssl_endpoint | AmazonMQ primary AMQP+SSL endpoint |
+| mq_primary_console_url | AmazonMQ active web console URL |
+| mq_primary_ip_address | AmazonMQ primary IP address |
+| mq_secondary_ampq_ssl_endpoint | AmazonMQ secondary AMQP+SSL endpoint |
+| mq_secondary_console_url | AmazonMQ secondary web console URL |
+| mq_secondary_ip_address | AmazonMQ secondary IP address |
 
 
 

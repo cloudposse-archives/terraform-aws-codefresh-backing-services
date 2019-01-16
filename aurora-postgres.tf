@@ -1,5 +1,3 @@
-# aurora-postgres variables
-#--------------------------------------------------------------
 variable "postgres_name" {
   type        = "string"
   description = "Name of the application, e.g. `app` or `analytics`"
@@ -62,8 +60,6 @@ variable "postgres_maintenance_window" {
   description = "Weekly time range during which system maintenance can occur, in UTC"
 }
 
-# aurora-postgres locals
-#--------------------------------------------------------------
 locals {
   postgres_cluster_enabled = "${var.postgres_cluster_enabled == "true"}"
   postgres_admin_user      = "${length(var.postgres_admin_user) > 0 ? var.postgres_admin_user : join("", random_string.postgres_admin_user.*.result)}"
@@ -72,8 +68,6 @@ locals {
   postgres_name            = "${length(var.postgres_name) > 0 ? var.postgres_name : module.label.id}"
 }
 
-# aurora-postgres module
-#--------------------------------------------------------------
 module "aurora_postgres" {
   source             = "git::https://github.com/cloudposse/terraform-aws-rds-cluster.git?ref=tags/0.10.0"
   namespace          = "${var.namespace}"
@@ -95,8 +89,6 @@ module "aurora_postgres" {
   enabled            = "${var.postgres_cluster_enabled}"
 }
 
-# aurora-postgres resources
-#--------------------------------------------------------------
 resource "random_pet" "postgres_db_name" {
   count     = "${local.postgres_cluster_enabled ? 1 : 0}"
   separator = "_"
@@ -170,8 +162,6 @@ resource "aws_ssm_parameter" "aurora_postgres_cluster_name" {
   overwrite   = "${var.overwrite_ssm_parameter}"
 }
 
-# aurora-postgres outputs
-#--------------------------------------------------------------
 output "aurora_postgres_database_name" {
   value       = "${module.aurora_postgres.name}"
   description = "Aurora Postgres Database name"
