@@ -42,12 +42,6 @@ variable "mq_engine_version" {
   default     = "5.15.0"
 }
 
-variable "mq_configuration_name" {
-  type        = "string"
-  description = "The name of the MQ configuration"
-  default     = "mq"
-}
-
 variable "mq_host_instance_type" {
   type        = "string"
   description = "The broker's instance type. e.g. mq.t2.micro or mq.m4.large"
@@ -90,71 +84,10 @@ variable "mq_maintenance_time_zone" {
   default     = "UTC"
 }
 
-variable "mq_admin_user" {
-  type        = "string"
-  description = "Admin username"
-  default     = ""
-}
-
-variable "mq_admin_password" {
-  type        = "string"
-  description = "Admin password"
-  default     = ""
-}
-
-variable "mq_config_template_path" {
-  type        = "string"
-  description = "Path to ActiveMQ XML config"
-  default     = ""
-}
-
 variable "mq_subnet_ids" {
   type        = "list"
   default     = []
   description = "A list of subnet IDs to launch the CodeFresh backing services in"
-}
-
-# mq locals
-#--------------------------------------------------------------
-locals {
-  mq_enabled              = "${var.mq_enabled == "true" ? true : false}"
-  mq_admin_user           = "${length(var.mq_admin_user) > 0 ? var.mq_admin_user : join("", random_string.mq_admin_user.*.result)}"
-  mq_admin_password       = "${length(var.mq_admin_password) > 0 ? var.mq_admin_password : join("", random_string.mq_admin_password.*.result)}"
-  mq_config_template_path = "${length(var.mq_config_template_path) > 0 ? var.mq_config_template_path : format("%s/templates/mq_default_config.xml", path.module)}"
-}
-
-# mq resources
-#--------------------------------------------------------------
-resource "random_string" "mq_admin_user" {
-  count   = "${local.mq_enabled ? 1 : 0}"
-  length  = 8
-  special = false
-  number  = false
-}
-
-resource "random_string" "mq_admin_password" {
-  count   = "${local.mq_enabled ? 1 : 0}"
-  length  = 16
-  special = true
-}
-
-resource "aws_ssm_parameter" "mq_master_username" {
-  count       = "${local.mq_enabled ? 1 : 0}"
-  name        = "${format(var.chamber_parameter_name, local.chamber_service, "mq_admin_username")}"
-  value       = "${local.mq_admin_user}"
-  description = "MQ Username for the master user"
-  type        = "String"
-  overwrite   = "${var.overwrite_ssm_parameter}"
-}
-
-resource "aws_ssm_parameter" "mq_master_password" {
-  count       = "${local.mq_enabled ? 1 : 0}"
-  name        = "${format(var.chamber_parameter_name, local.chamber_service, "mq_admin_password")}"
-  value       = "${local.mq_admin_password}"
-  description = "MQ Password for the master user"
-  type        = "SecureString"
-  key_id      = "${data.aws_kms_key.chamber_kms_key.id}"
-  overwrite   = "${var.overwrite_ssm_parameter}"
 }
 
 # mq modules
@@ -171,7 +104,7 @@ module "amq" {
   deployment_mode            = "${var.mq_deployment_mode}"
   engine_type                = "${var.mq_engine_type}"
   engine_version             = "${var.mq_engine_version}"
-  configuration_name         = "${var.mq_configuration_name}"
+  chamber_service            = "${local.chamber_service}"
   host_instance_type         = "${var.mq_host_instance_type}"
   publicly_accessible        = "${var.mq_publicly_accessible}"
   general_log                = "${var.mq_general_log}"
@@ -179,7 +112,6 @@ module "amq" {
   maintenance_day_of_week    = "${var.mq_maintenance_day_of_week}"
   maintenance_time_of_day    = "${var.mq_maintenance_time_of_day}"
   maintenance_time_zone      = "${var.mq_maintenance_time_zone}"
-  config_template_path       = "${var.mq_config_template_path}"
   vpc_id                     = "${var.vpc_id}"
   subnet_ids                 = ["${var.mq_subnet_ids}"]
   security_groups            = ["${var.node_security_groups}"]
@@ -217,4 +149,12 @@ output "mq_secondary_ampq_ssl_endpoint" {
 
 output "mq_secondary_ip_address" {
   value = "${module.amq.secondary_ip_address}"
+}
+
+output "mq_admin_username" {
+  value = "${module.amq.admin_username}"
+}
+
+output "mq_application_username" {
+  value = "${module.amq.application_username}"
 }
