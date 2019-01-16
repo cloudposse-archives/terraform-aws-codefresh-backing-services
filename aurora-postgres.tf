@@ -91,7 +91,7 @@ module "aurora_postgres" {
   vpc_id             = "${var.vpc_id}"
   subnets            = ["${var.subnet_ids}"]
   zone_id            = "${local.zone_id}"
-  security_groups    = ["${module.kops_metadata.nodes_security_group_id}"]
+  security_groups    = ["${var.node_security_groups}"]
   enabled            = "${var.postgres_cluster_enabled}"
 }
 

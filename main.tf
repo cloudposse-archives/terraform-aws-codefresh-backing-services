@@ -79,6 +79,12 @@ variable "tags" {
   description = "Additional tags (e.g. map(`Cluster`,`us-east-1.cloudposse.co`)"
 }
 
+variable "node_security_groups" {
+  type        = "list"
+  default     = []
+  description = "List of Kops node security groups to be allowed to connect to the CodeFresh backing infra"
+}
+
 variable "subnet_ids" {
   type        = "list"
   default     = []
