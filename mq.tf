@@ -83,7 +83,7 @@ variable "mq_subnet_ids" {
 }
 
 module "amq" {
-  source                     = "git::https://github.com/cloudposse/terraform-aws-mq-broker.git?ref=initial_implementation"
+  source                     = "git::https://github.com/cloudposse/terraform-aws-mq-broker.git?ref=tags/0.1.0"
   namespace                  = "${var.namespace}"
   stage                      = "${var.stage}"
   name                       = "${var.name}"
