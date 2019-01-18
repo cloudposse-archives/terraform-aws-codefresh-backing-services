@@ -16,12 +16,6 @@ variable "mq_auto_minor_version_upgrade" {
   default     = "false"
 }
 
-variable "mq_broker_name" {
-  type        = "string"
-  description = "The name of the broker"
-  default     = "mq"
-}
-
 variable "mq_deployment_mode" {
   type        = "string"
   description = "The deployment mode of the broker. Supported: SINGLE_INSTANCE and ACTIVE_STANDBY_MULTI_AZ"
@@ -93,7 +87,6 @@ module "amq" {
   namespace                  = "${var.namespace}"
   stage                      = "${var.stage}"
   name                       = "${var.name}"
-  broker_name                = "${var.mq_broker_name}"
   apply_immediately          = "${var.mq_apply_immediately}"
   enabled                    = "${var.mq_enabled}"
   auto_minor_version_upgrade = "${var.mq_auto_minor_version_upgrade}"
