@@ -18,7 +18,7 @@ variable "redis_cluster_size" {
 
 variable "redis_cluster_enabled" {
   type        = "string"
-  default     = "true"
+  default     = ""
   description = "Set to false to prevent the module from creating any resources"
 }
 
@@ -71,18 +71,19 @@ variable "redis_apply_immediately" {
 }
 
 locals {
-  redis_family     = "${format("redis%s", join(".", slice(split(".", var.redis_engine_version),0,2)))}"
-  redis_auth_token = "${length(var.redis_auth_token) > 0 ? var.redis_auth_token : join("", random_string.redis_auth_token.*.result)}"
+  redis_cluster_enabled = "${var.redis_cluster_enabled != "" ? var.redis_cluster_enabled : var.enabled}"
+  redis_family          = "${format("redis%s", join(".", slice(split(".", var.redis_engine_version),0,2)))}"
+  redis_auth_token      = "${length(var.redis_auth_token) > 0 ? var.redis_auth_token : join("", random_string.redis_auth_token.*.result)}"
 }
 
 resource "random_string" "redis_auth_token" {
-  count   = "${var.redis_cluster_enabled ? 1 : 0}"
+  count   = "${local.redis_cluster_enabled == "true" ? 1 : 0}"
   length  = 16
   special = "false"
 }
 
 resource "aws_ssm_parameter" "redis_auth_token" {
-  count       = "${var.redis_cluster_enabled ? 1 : 0}"
+  count       = "${local.redis_cluster_enabled == "true" ? 1 : 0}"
   name        = "${format(var.chamber_format, local.chamber_service, "redis_auth_token")}"
   value       = "${local.redis_auth_token}"
   description = "Redis Elasticache auth token"
@@ -114,21 +115,21 @@ module "elasticache_redis" {
   at_rest_encryption_enabled   = "${var.redis_at_rest_encryption_enabled}"
   availability_zones           = ["${data.aws_availability_zones.available.names}"]
   automatic_failover           = "${var.redis_automatic_failover}"
-  enabled                      = "${var.redis_cluster_enabled}"
+  enabled                      = "${local.redis_cluster_enabled}"
   parameter                    = "${var.redis_params}"
 }
 
 output "elasticache_redis_id" {
-  value       = "${module.elasticache_redis.id}"
+  value       = "${local.redis_cluster_enabled == "true" : module.elasticache_redis.id ? ""}"
   description = "Elasticache Redis cluster ID"
 }
 
 output "elasticache_redis_security_group_id" {
-  value       = "${module.elasticache_redis.security_group_id}"
+  value       = "${local.redis_cluster_enabled == "true" : module.elasticache_redis.security_group_id ? ""}"
   description = "Elasticache Redis security group ID"
 }
 
 output "elasticache_redis_host" {
-  value       = "${module.elasticache_redis.host}"
+  value       = "${local.redis_cluster_enabled == "true" : module.elasticache_redis.host ? ""}"
   description = "Elasticache Redis host"
 }

@@ -6,7 +6,7 @@ variable "mq_apply_immediately" {
 
 variable "mq_enabled" {
   type        = "string"
-  default     = "true"
+  default     = ""
   description = "Set to false to prevent the module from creating any resources"
 }
 
@@ -82,13 +82,17 @@ variable "mq_subnet_ids" {
   description = "A list of subnet IDs to launch the CodeFresh backing services in"
 }
 
+locals {
+  mq_enabled = "${var.mq_enabled != "" ? var.mq_enabled : var.enabled}"
+}
+
 module "amq" {
   source                     = "git::https://github.com/cloudposse/terraform-aws-mq-broker.git?ref=tags/0.1.0"
   namespace                  = "${var.namespace}"
   stage                      = "${var.stage}"
   name                       = "${var.name}"
   apply_immediately          = "${var.mq_apply_immediately}"
-  enabled                    = "${var.mq_enabled}"
+  enabled                    = "${local.mq_enabled}"
   auto_minor_version_upgrade = "${var.mq_auto_minor_version_upgrade}"
   deployment_mode            = "${var.mq_deployment_mode}"
   engine_type                = "${var.mq_engine_type}"
@@ -107,51 +111,51 @@ module "amq" {
 }
 
 output "mq_broker_id" {
-  value       = "${module.amq.broker_id}"
+  value       = "${local.mq_enabled ? module.amq.broker_id : ""}"
   description = "AmazonMQ broker ID"
 }
 
 output "mq_broker_arn" {
-  value       = "${module.amq.broker_arn}"
+  value       = "${local.mq_enabled ? module.amq.broker_arn : ""}"
   description = "AmazonMQ broker ARN"
 }
 
 output "mq_primary_console_url" {
-  value       = "${module.amq.primary_console_url}"
+  value       = "${local.mq_enabled ? module.amq.primary_console_url : ""}"
   description = "AmazonMQ active web console URL"
 }
 
 output "mq_primary_ampq_ssl_endpoint" {
-  value       = "${module.amq.primary_ampq_ssl_endpoint}"
+  value       = "${local.mq_enabled ?  module.amq.primary_ampq_ssl_endpoint : ""}"
   description = "AmazonMQ primary AMQP+SSL endpoint"
 }
 
 output "mq_primary_ip_address" {
-  value       = "${module.amq.primary_ip_address}"
+  value       = "${local.mq_enabled ? module.amq.primary_ip_address : ""}"
   description = "AmazonMQ primary IP address"
 }
 
 output "mq_secondary_console_url" {
-  value       = "${module.amq.secondary_console_url}"
+  value       = "${local.mq_enabled ? module.amq.secondary_console_url : ""}"
   description = "AmazonMQ secondary web console URL"
 }
 
 output "mq_secondary_ampq_ssl_endpoint" {
-  value       = "${module.amq.secondary_ampq_ssl_endpoint}"
+  value       = "${local.mq_enabled ? module.amq.secondary_ampq_ssl_endpoint : ""}"
   description = "AmazonMQ secondary AMQP+SSL endpoint"
 }
 
 output "mq_secondary_ip_address" {
-  value       = "${module.amq.secondary_ip_address}"
+  value       = "${local.mq_enabled ? module.amq.secondary_ip_address : ""}"
   description = "AmazonMQ secondary IP address"
 }
 
 output "mq_admin_username" {
-  value       = "${module.amq.admin_username}"
+  value       = "${local.mq_enabled ? module.amq.admin_username : ""}"
   description = "AmazonMQ admin username"
 }
 
 output "mq_application_username" {
-  value       = "${module.amq.application_username}"
+  value       = "${local.mq_enabled ? module.amq.application_username : ""}"
   description = "AmazonMQ application username"
 }
