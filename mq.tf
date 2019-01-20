@@ -107,7 +107,7 @@ module "amq" {
   maintenance_time_zone      = "${var.mq_maintenance_time_zone}"
   vpc_id                     = "${var.vpc_id}"
   subnet_ids                 = ["${var.mq_subnet_ids}"]
-  security_groups            = ["${var.node_security_groups}"]
+  security_groups            = ["${var.security_groups}"]
 }
 
 output "mq_broker_id" {

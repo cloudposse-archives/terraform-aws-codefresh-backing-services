@@ -98,7 +98,7 @@ module "elasticache_redis" {
   stage                        = "${var.stage}"
   name                         = "${var.redis_name}"
   zone_id                      = "${local.zone_id}"
-  security_groups              = ["${var.node_security_groups}"]
+  security_groups              = ["${var.security_groups}"]
   vpc_id                       = "${var.vpc_id}"
   subnets                      = ["${var.subnet_ids}"]
   maintenance_window           = "${var.redis_maintenance_window}"

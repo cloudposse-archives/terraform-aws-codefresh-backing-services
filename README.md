@@ -100,7 +100,7 @@ Available targets:
 | mq_subnet_ids | A list of subnet IDs to launch the CodeFresh backing services in | list | `<list>` | no |
 | name | Name  (e.g. `codefresh`) | string | `codefresh` | no |
 | namespace | Namespace (e.g. `eg` or `cp`) | string | - | yes |
-| node_security_groups | List of security groups to be allowed to connect to the CodeFresh backing services | list | `<list>` | no |
+| security_groups | List of security groups to be allowed to connect to the CodeFresh backing services | list | `<list>` | no |
 | overwrite_ssm_parameter | Whether to overwrite an existing SSM parameter | string | `true` | no |
 | postgres_admin_password | Postgres password for the admin user | string | `` | no |
 | postgres_admin_user | Postgres admin user name | string | `` | no |

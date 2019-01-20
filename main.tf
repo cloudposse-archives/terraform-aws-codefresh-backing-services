@@ -75,7 +75,7 @@ variable "tags" {
   description = "Additional tags (e.g. map(`Cluster`,`us-east-1.cloudposse.co`)"
 }
 
-variable "node_security_groups" {
+variable "security_groups" {
   type        = "list"
   default     = []
   description = "List of security groups to be allowed to connect to the CodeFresh backing services"

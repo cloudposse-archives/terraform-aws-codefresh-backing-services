@@ -18,7 +18,7 @@ module "efs" {
   vpc_id             = "${var.vpc_id}"
   subnets            = "${var.subnet_ids}"
   availability_zones = ["${data.aws_availability_zones.available.names}"]
-  security_groups    = ["${var.node_security_groups}"]
+  security_groups    = ["${var.security_groups}"]
   zone_id            = "${local.zone_id}"
 }
 
