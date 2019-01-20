@@ -63,13 +63,27 @@ introduction: |-
   - AWS Aurora cluster
   - AWS Elasticache Redis
   - AWS AmazonMQ (ActiveMQ)
+  - AWS S3 bucket with associated user and permissions
+  - AWS EFS
 
 # How to use this project
 usage: |-
+  ```terraform
+  module "codefresh_backing_services" {
+    source          = "git::https://github.com/cloudposse/terraform-aws-codefresh-backing-services.git?ref=master"
+    enabled         = "true"
+    name            = "${var.name}"
+    namespace       = "${var.namespace}"
+    region          = "${var.region}"
+    stage           = "${var.stage}"
+    vpc_id          = "${module.vpc.vpc_id}"
+    subnet_ids      = ["${module.subnets.private_subnet_ids}"]
+    security_groups = ["${module.vpc.vpc_default_security_group_id}"]
+  }
+  ```
 
   For a complete example, see [examples/complete](examples/complete)
   TODO
-
 
 include:
   - "docs/targets.md"

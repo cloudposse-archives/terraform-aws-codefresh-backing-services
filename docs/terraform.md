@@ -11,8 +11,6 @@
 | efs_enabled | Set to false to prevent the module from creating any resources | string | `` | no |
 | enabled | Set to false to prevent the module from creating any resources | string | `true` | no |
 | kms_key_id | KMS key id used to encrypt SSM parameters | string | `` | no |
-| mq_admin_password | Admin password | string | `` | no |
-| mq_admin_user | Admin username | string | `` | no |
 | mq_apply_immediately | Specifies whether any cluster modifications are applied immediately, or during the next maintenance window | string | `true` | no |
 | mq_audit_log | Enables audit logging. User management action made using JMX or the ActiveMQ Web Console is logged | string | `true` | no |
 | mq_auto_minor_version_upgrade | Enables automatic upgrades to new minor versions for brokers, as Apache releases the versions | string | `false` | no |
@@ -29,7 +27,6 @@
 | mq_subnet_ids | A list of subnet IDs to launch the CodeFresh backing services in | list | `<list>` | no |
 | name | Name  (e.g. `codefresh`) | string | `codefresh` | no |
 | namespace | Namespace (e.g. `eg` or `cp`) | string | - | yes |
-| node_security_groups | List of security groups to be allowed to connect to the CodeFresh backing services | list | `<list>` | no |
 | overwrite_ssm_parameter | Whether to overwrite an existing SSM parameter | string | `true` | no |
 | postgres_admin_password | Postgres password for the admin user | string | `` | no |
 | postgres_admin_user | Postgres admin user name | string | `` | no |
@@ -58,6 +55,7 @@
 | s3_secret_key_name | S3 user IAM secret key name for storing in SSM. Default to aws_secret_acces_key so chamber exports as AWS_SECRET_ACCESS_KEY, a standard AWS IAM ENV variable | string | `aws_secret_access_key` | no |
 | s3_user_enabled | Set to `true` to create an S3 user with permission to access the bucket | string | `` | no |
 | s3_versioning_enabled | Whether to enable versioning on the S3 bucket. | string | `false` | no |
+| security_groups | List of security groups to be allowed to connect to the CodeFresh backing services | list | `<list>` | no |
 | stage | Stage (e.g. `prod`, `dev`, `staging`) | string | - | yes |
 | subnet_ids | A list of subnet IDs to launch the CodeFresh backing services in | list | `<list>` | no |
 | tags | Additional tags (e.g. map(`Cluster`,`us-east-1.cloudposse.co`) | map | `<map>` | no |
