@@ -54,9 +54,9 @@
 | redis_transit_encryption_enabled | Enable TLS | string | `true` | no |
 | s3_access_key_name | S3 user IAM access key name for storing in SSM. Default to aws_acces_key_id so chamber exports as AWS_ACCESS_KEY_ID, a standard AWS IAM ENV variable | string | `aws_access_key_id` | no |
 | s3_allowed_bucket_actions | List of actions to permit for S3 bucket | list | `<list>` | no |
-| s3_enabled | Set to false to prevent the module from creating any resources | string | `true` | no |
+| s3_enabled | Set to false to prevent the module from creating any resources | string | `` | no |
 | s3_secret_key_name | S3 user IAM secret key name for storing in SSM. Default to aws_secret_acces_key so chamber exports as AWS_SECRET_ACCESS_KEY, a standard AWS IAM ENV variable | string | `aws_secret_access_key` | no |
-| s3_user_enabled | Set to `true` to create an S3 user with permission to access the bucket | string | `true` | no |
+| s3_user_enabled | Set to `true` to create an S3 user with permission to access the bucket | string | `` | no |
 | s3_versioning_enabled | Whether to enable versioning on the S3 bucket. | string | `false` | no |
 | stage | Stage (e.g. `prod`, `dev`, `staging`) | string | - | yes |
 | subnet_ids | A list of subnet IDs to launch the CodeFresh backing services in | list | `<list>` | no |
@@ -94,4 +94,10 @@
 | mq_secondary_ampq_ssl_endpoint | AmazonMQ secondary AMQP+SSL endpoint |
 | mq_secondary_console_url | AmazonMQ secondary web console URL |
 | mq_secondary_ip_address | AmazonMQ secondary IP address |
+| s3_access_key_id | The access key ID |
+| s3_bucket_arn | The s3 bucket ARN |
+| s3_secret_access_key | The secret access key. This will be written to the state file in plain-text |
+| s3_user_arn | The ARN assigned by AWS for the user |
+| s3_user_name | Normalized IAM user name |
+| s3_user_unique_id | The user unique ID assigned by AWS |
 
