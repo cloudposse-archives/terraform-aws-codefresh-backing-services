@@ -76,14 +76,12 @@ variable "mq_maintenance_time_zone" {
   default     = "UTC"
 }
 
-variable "mq_subnet_ids" {
-  type        = "list"
-  default     = []
-  description = "A list of subnet IDs to launch the CodeFresh backing services in"
-}
-
+# Running ActiveMQ in ACTIVE_STANDBY_MULTI_AZ mode requires you only
+# supply 2 subnets. Any more and the resource will complain. Similarly
+# you must pass a single subnet if running in SINGLE_INSTANCE mode
 locals {
-  mq_enabled = "${var.mq_enabled != "" ? var.mq_enabled : var.enabled}"
+  mq_enabled    = "${var.mq_enabled != "" ? var.mq_enabled : var.enabled}"
+  mq_subnet_ids = "${var.mq_deployment_mode == "ACTIVE_STANDBY_MULTI_AZ" ? slice(var.subnet_ids,0,2) : slice(var.subnet_ids,0,1)}"
 }
 
 module "amq" {
@@ -106,7 +104,7 @@ module "amq" {
   maintenance_time_of_day    = "${var.mq_maintenance_time_of_day}"
   maintenance_time_zone      = "${var.mq_maintenance_time_zone}"
   vpc_id                     = "${var.vpc_id}"
-  subnet_ids                 = ["${var.mq_subnet_ids}"]
+  subnet_ids                 = ["${local.mq_subnet_ids}"]
   security_groups            = ["${var.security_groups}"]
 }
 

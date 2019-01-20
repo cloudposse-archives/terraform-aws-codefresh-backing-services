@@ -110,7 +110,6 @@ Available targets:
 | mq_maintenance_time_of_day | The time, in 24-hour format. e.g. 02:00 | string | `03:00` | no |
 | mq_maintenance_time_zone | The time zone, in either the Country/City format, or the UTC offset format. e.g. CET | string | `UTC` | no |
 | mq_publicly_accessible | Whether to enable connections from applications outside of the VPC that hosts the broker's subnets. | string | `false` | no |
-| mq_subnet_ids | A list of subnet IDs to launch the CodeFresh backing services in | list | `<list>` | no |
 | name | Name  (e.g. `codefresh`) | string | `codefresh` | no |
 | namespace | Namespace (e.g. `eg` or `cp`) | string | - | yes |
 | overwrite_ssm_parameter | Whether to overwrite an existing SSM parameter | string | `true` | no |
