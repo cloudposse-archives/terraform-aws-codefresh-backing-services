@@ -85,7 +85,7 @@ locals {
 }
 
 module "amq" {
-  source                     = "git::https://github.com/cloudposse/terraform-aws-mq-broker.git?ref=tags/0.1.0"
+  source                     = "git::https://github.com/cloudposse/terraform-aws-mq-broker.git?ref=tags/0.2.0"
   namespace                  = "${var.namespace}"
   stage                      = "${var.stage}"
   name                       = "${var.name}"
