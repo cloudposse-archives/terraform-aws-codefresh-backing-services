@@ -116,12 +116,11 @@ Available targets:
 | postgres_admin_password | Postgres password for the admin user | string | `` | no |
 | postgres_admin_user | Postgres admin user name | string | `` | no |
 | postgres_cluster_enabled | Set to false to prevent the module from creating any resources | string | `` | no |
-| postgres_cluster_family | Postgres cluster DB family. Currently supported values are aurora-postgresql9.6 / aurora-postgresql10 | string | `aurora-postgresql9.6` | no |
+| postgres_cluster_family | Postgres cluster DB family. Currently supported values are `aurora-postgresql9.6` and `aurora-postgresql10` | string | `aurora-postgresql9.6` | no |
 | postgres_cluster_size | Postgres cluster size | string | `2` | no |
 | postgres_db_name | Postgres database name | string | `` | no |
 | postgres_instance_type | EC2 instance type for Postgres cluster | string | `db.r4.large` | no |
 | postgres_maintenance_window | Weekly time range during which system maintenance can occur, in UTC | string | `sun:03:00-sun:04:00` | no |
-| postgres_name | Name of the application, e.g. `app` or `analytics` | string | `` | no |
 | redis_apply_immediately | Whether to apply changes immediately or during the next maintenance_window | string | `true` | no |
 | redis_at_rest_encryption_enabled | Enable Redis encryption at rest | string | `true` | no |
 | redis_auth_token | Auth token for password protecting redis, transit_encryption_enabled must be set to 'true'! Password must be longer than 16 chars | string | `` | no |

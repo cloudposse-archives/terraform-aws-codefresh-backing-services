@@ -1,9 +1,3 @@
-variable "postgres_name" {
-  type        = "string"
-  description = "Name of the application, e.g. `app` or `analytics`"
-  default     = ""
-}
-
 # Don't use `admin` 
 # Read more: <https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Limits.html>
 # ("MasterUsername admin cannot be used as it is a reserved word used by the engine")
@@ -51,7 +45,7 @@ variable "postgres_cluster_enabled" {
 variable "postgres_cluster_family" {
   type        = "string"
   default     = "aurora-postgresql9.6"
-  description = "Postgres cluster DB family. Currently supported values are aurora-postgresql9.6 / aurora-postgresql10"
+  description = "Postgres cluster DB family. Currently supported values are `aurora-postgresql9.6` and `aurora-postgresql10`"
 }
 
 variable "postgres_maintenance_window" {
@@ -65,14 +59,13 @@ locals {
   postgres_admin_user      = "${length(var.postgres_admin_user) > 0 ? var.postgres_admin_user : join("", random_string.postgres_admin_user.*.result)}"
   postgres_admin_password  = "${length(var.postgres_admin_password) > 0 ? var.postgres_admin_password : join("", random_string.postgres_admin_password.*.result)}"
   postgres_db_name         = "${var.postgres_db_name != "" ? var.postgres_db_name : join("", random_pet.postgres_db_name.*.id)}"
-  postgres_name            = "${length(var.postgres_name) > 0 ? var.postgres_name : module.label.id}"
 }
 
 module "aurora_postgres" {
   source             = "git::https://github.com/cloudposse/terraform-aws-rds-cluster.git?ref=tags/0.10.0"
   namespace          = "${var.namespace}"
   stage              = "${var.stage}"
-  name               = "${local.postgres_name}"
+  name               = "${var.name}"
   engine             = "aurora-postgresql"
   cluster_family     = "${var.postgres_cluster_family}"
   instance_type      = "${var.postgres_instance_type}"
