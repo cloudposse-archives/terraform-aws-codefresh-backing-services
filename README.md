@@ -121,17 +121,17 @@ Available targets:
 | postgres_db_name | Postgres database name | string | `` | no |
 | postgres_instance_type | EC2 instance type for Postgres cluster | string | `db.r4.large` | no |
 | postgres_maintenance_window | Weekly time range during which system maintenance can occur, in UTC | string | `sun:03:00-sun:04:00` | no |
-| redis_apply_immediately | Whether to apply changes immediately or during the next maintenance_window | string | `true` | no |
+| redis_apply_immediately | Whether to apply changes immediately or during the next maintenance window | string | `true` | no |
 | redis_at_rest_encryption_enabled | Enable Redis encryption at rest | string | `true` | no |
-| redis_auth_token | Auth token for password protecting redis, transit_encryption_enabled must be set to 'true'! Password must be longer than 16 chars | string | `` | no |
-| redis_automatic_failover | Whether to enable automatic_failover | string | `true` | no |
+| redis_auth_token | Auth token for password protecting Redis. `transit_encryption_enabled` must be set to `true`! Password must be longer than 16 chars | string | `` | no |
+| redis_automatic_failover | Whether to enable automatic failover | string | `true` | no |
 | redis_cluster_enabled | Set to false to prevent the module from creating any resources | string | `` | no |
 | redis_cluster_size | Redis cluster size | string | `2` | no |
 | redis_engine_version | Version of Redis engine | string | `3.2.6` | no |
 | redis_instance_type | EC2 instance type for Redis cluster | string | `cache.t2.medium` | no |
 | redis_maintenance_window | Weekly time range during which system maintenance can occur, in UTC | string | `sun:03:00-sun:04:00` | no |
 | redis_params | A list of Redis parameters to apply. Note that parameters may differ from a Redis family to another | list | `<list>` | no |
-| redis_transit_encryption_enabled | Enable TLS | string | `true` | no |
+| redis_transit_encryption_enabled | Enable TLS for Redis cluster | string | `true` | no |
 | s3_access_key_name | S3 user IAM access key name for storing in SSM. Default to aws_acces_key_id so chamber exports as AWS_ACCESS_KEY_ID, a standard AWS IAM ENV variable | string | `aws_access_key_id` | no |
 | s3_allowed_bucket_actions | List of actions to permit for S3 bucket | list | `<list>` | no |
 | s3_enabled | Set to false to prevent the module from creating any resources | string | `` | no |

@@ -19,7 +19,7 @@ variable "redis_cluster_enabled" {
 variable "redis_auth_token" {
   type        = "string"
   default     = ""
-  description = "Auth token for password protecting redis, transit_encryption_enabled must be set to 'true'! Password must be longer than 16 chars"
+  description = "Auth token for password protecting Redis. `transit_encryption_enabled` must be set to `true`! Password must be longer than 16 chars"
 }
 
 variable "redis_engine_version" {
@@ -31,7 +31,7 @@ variable "redis_engine_version" {
 variable "redis_transit_encryption_enabled" {
   type        = "string"
   default     = "true"
-  description = "Enable TLS"
+  description = "Enable TLS for Redis cluster"
 }
 
 variable "redis_at_rest_encryption_enabled" {
@@ -55,13 +55,13 @@ variable "redis_maintenance_window" {
 variable "redis_automatic_failover" {
   type        = "string"
   default     = "true"
-  description = "Whether to enable automatic_failover"
+  description = "Whether to enable automatic failover"
 }
 
 variable "redis_apply_immediately" {
   type        = "string"
   default     = "true"
-  description = "Whether to apply changes immediately or during the next maintenance_window"
+  description = "Whether to apply changes immediately or during the next maintenance window"
 }
 
 locals {
@@ -114,16 +114,16 @@ module "elasticache_redis" {
 }
 
 output "elasticache_redis_id" {
-  value       = "${local.redis_cluster_enabled == "true" : module.elasticache_redis.id ? ""}"
+  value       = "${local.redis_cluster_enabled == "true" ? module.elasticache_redis.id : ""}"
   description = "Elasticache Redis cluster ID"
 }
 
 output "elasticache_redis_security_group_id" {
-  value       = "${local.redis_cluster_enabled == "true" : module.elasticache_redis.security_group_id ? ""}"
+  value       = "${local.redis_cluster_enabled == "true" ? module.elasticache_redis.security_group_id : ""}"
   description = "Elasticache Redis security group ID"
 }
 
 output "elasticache_redis_host" {
-  value       = "${local.redis_cluster_enabled == "true" : module.elasticache_redis.host ? ""}"
+  value       = "${local.redis_cluster_enabled == "true" ? module.elasticache_redis.host : ""}"
   description = "Elasticache Redis host"
 }
