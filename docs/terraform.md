@@ -44,7 +44,6 @@
 | redis_engine_version | Version of Redis engine | string | `3.2.6` | no |
 | redis_instance_type | EC2 instance type for Redis cluster | string | `cache.t2.medium` | no |
 | redis_maintenance_window | Weekly time range during which system maintenance can occur, in UTC | string | `sun:03:00-sun:04:00` | no |
-| redis_name | Redis name | string | `redis` | no |
 | redis_params | A list of Redis parameters to apply. Note that parameters may differ from a Redis family to another | list | `<list>` | no |
 | redis_transit_encryption_enabled | Enable TLS | string | `true` | no |
 | s3_access_key_name | S3 user IAM access key name for storing in SSM. Default to aws_acces_key_id so chamber exports as AWS_ACCESS_KEY_ID, a standard AWS IAM ENV variable | string | `aws_access_key_id` | no |
