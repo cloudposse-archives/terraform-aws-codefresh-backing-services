@@ -38,7 +38,7 @@ variable "zone_name" {
 variable "kms_key_id" {
   type        = "string"
   default     = ""
-  description = "KMS key id used to encrypt SSM parameters"
+  description = "KMS key ID used to encrypt SSM parameters"
 }
 
 variable "chamber_format" {
@@ -52,8 +52,7 @@ variable "chamber_service" {
 }
 
 variable "overwrite_ssm_parameter" {
-  type        = "string"
-  default     = "true"
+  default     = true
   description = "Whether to overwrite an existing SSM parameter"
 }
 

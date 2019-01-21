@@ -10,7 +10,7 @@
 | delimiter | Delimiter to be used between `namespace`, `stage`, `name` and `attributes` | string | `-` | no |
 | efs_enabled | Set to false to prevent the module from creating any resources | string | `` | no |
 | enabled | Set to false to prevent the module from creating any resources | string | `true` | no |
-| kms_key_id | KMS key id used to encrypt SSM parameters | string | `` | no |
+| kms_key_id | KMS key ID used to encrypt SSM parameters | string | `` | no |
 | mq_apply_immediately | Specifies whether any cluster modifications are applied immediately, or during the next maintenance window | string | `true` | no |
 | mq_audit_log | Enables audit logging. User management action made using JMX or the ActiveMQ Web Console is logged | string | `true` | no |
 | mq_auto_minor_version_upgrade | Enables automatic upgrades to new minor versions for brokers, as Apache releases the versions | string | `false` | no |
