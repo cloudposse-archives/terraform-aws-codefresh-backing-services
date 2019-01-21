@@ -29,9 +29,6 @@ badges:
     url: "https://slack.cloudposse.com"
 
 related:
-  - name: "terraform-null-label"
-    description: "Terraform Module to define a consistent naming convention by (namespace, stage, name, [attributes])"
-    url: "https://github.com/cloudposse/terraform-null-label"
   - name: "terraform-aws-rds-cluster"
     description: "Terraform module to provision an RDS Aurora cluster for MySQL or Postgres"
     url: "https://github.com/cloudposse/terraform-aws-rds-cluster"

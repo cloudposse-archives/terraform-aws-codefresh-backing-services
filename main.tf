@@ -97,17 +97,6 @@ variable "enabled" {
   description = "Set to false to prevent the module from creating any resources"
 }
 
-module "label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.3.5"
-  namespace  = "${var.namespace}"
-  name       = "${var.name}"
-  stage      = "${var.stage}"
-  delimiter  = "${var.delimiter}"
-  attributes = "${var.attributes}"
-  tags       = "${var.tags}"
-  enabled    = "${var.enabled}"
-}
-
 data "aws_region" "current" {}
 
 data "aws_availability_zones" "available" {}
