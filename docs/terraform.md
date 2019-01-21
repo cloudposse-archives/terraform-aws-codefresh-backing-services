@@ -19,7 +19,7 @@
 | mq_engine_type | The type of broker engine. Currently, Amazon MQ supports only ActiveMQ | string | `ActiveMQ` | no |
 | mq_engine_version | The version of the broker engine. Currently, Amazon MQ supports only 5.15.0 or 5.15.6. | string | `5.15.0` | no |
 | mq_general_log | Enables general logging via CloudWatch | string | `true` | no |
-| mq_host_instance_type | The broker's instance type. e.g. mq.t2.micro or mq.m4.large | string | `mq.t2.micro` | no |
+| mq_host_instance_type | The broker's instance type. e.g. mq.t2.micro or mq.m4.large | string | `mq.m4.large` | no |
 | mq_maintenance_day_of_week | The day of the week. e.g. MONDAY, TUESDAY, or WEDNESDAY | string | `SUNDAY` | no |
 | mq_maintenance_time_of_day | The time, in 24-hour format. e.g. 02:00 | string | `03:00` | no |
 | mq_maintenance_time_zone | The time zone, in either the Country/City format, or the UTC offset format. e.g. CET | string | `UTC` | no |

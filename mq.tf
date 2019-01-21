@@ -37,7 +37,7 @@ variable "mq_engine_version" {
 variable "mq_host_instance_type" {
   type        = "string"
   description = "The broker's instance type. e.g. mq.t2.micro or mq.m4.large"
-  default     = "mq.t2.micro"
+  default     = "mq.m4.large"
 }
 
 variable "mq_publicly_accessible" {
