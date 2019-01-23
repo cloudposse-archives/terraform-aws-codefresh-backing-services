@@ -4,8 +4,22 @@ variable "efs_enabled" {
   description = "Set to false to prevent the module from creating any resources"
 }
 
+variable "efs_subnet_ids" {
+  type        = "list"
+  default     = []
+  description = "A list of subnet IDs for EFS"
+}
+
+variable "efs_vpc_id" {
+  type        = "string"
+  default     = ""
+  description = "VPC ID for EFS"
+}
+
 locals {
-  efs_enabled = "${var.efs_enabled != "" ? var.efs_enabled : var.enabled}"
+  efs_enabled    = "${var.efs_enabled != "" ? var.efs_enabled : var.enabled}"
+  efs_subnet_ids = "${length(var.efs_subnet_ids) > 0 ? var.efs_subnet_ids : var.subnets }"
+  efs_vpc_id     = "${var.efs_vpc_id != "" ? var.efs_vpc_id ? : var.vpc_id }"
 }
 
 module "efs" {
@@ -15,8 +29,8 @@ module "efs" {
   stage              = "${var.stage}"
   name               = "${var.name}"
   aws_region         = "${data.aws_region.current.name}"
-  vpc_id             = "${var.vpc_id}"
-  subnets            = "${var.subnet_ids}"
+  vpc_id             = "${local.efs_vpc_id}"
+  subnets            = "${local.efs_subnet_ids}"
   availability_zones = ["${data.aws_availability_zones.available.names}"]
   security_groups    = ["${var.security_groups}"]
   zone_id            = "${local.zone_id}"
