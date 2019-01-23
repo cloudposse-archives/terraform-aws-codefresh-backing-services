@@ -9,7 +9,7 @@ locals {
 }
 
 module "efs" {
-  source             = "git::https://github.com/cloudposse/terraform-aws-efs.git?ref=tags/0.8.1"
+  source             = "git::https://github.com/cloudposse/terraform-aws-efs.git?ref=add_enabled_flag"
   enabled            = "${local.efs_enabled}"
   namespace          = "${var.namespace}"
   stage              = "${var.stage}"
