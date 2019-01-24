@@ -24,7 +24,7 @@ variable "redis_auth_token" {
 
 variable "redis_engine_version" {
   type        = "string"
-  default     = "3.2.6"
+  default     = "5.0.0"
   description = "Version of Redis engine"
 }
 

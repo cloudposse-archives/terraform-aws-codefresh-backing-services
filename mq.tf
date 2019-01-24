@@ -116,7 +116,7 @@ output "mq_primary_console_url" {
 }
 
 output "mq_primary_ampq_ssl_endpoint" {
-  value       = "${module.amq.primary_ampq_ssl_endpoint}"
+  value       = "${module.amq.primary_amqp_ssl_endpoint}"
   description = "AmazonMQ primary AMQP+SSL endpoint"
 }
 
@@ -131,7 +131,7 @@ output "mq_secondary_console_url" {
 }
 
 output "mq_secondary_ampq_ssl_endpoint" {
-  value       = "${module.amq.secondary_ampq_ssl_endpoint}"
+  value       = "${module.amq.secondary_amqp_ssl_endpoint}"
   description = "AmazonMQ secondary AMQP+SSL endpoint"
 }
 
