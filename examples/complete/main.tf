@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 module "vpc" {
-  source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=master"
+  source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=0.3.6"
   namespace  = "${var.namespace}"
   stage      = "${var.stage}"
   name       = "${var.name}"
@@ -13,7 +13,7 @@ module "vpc" {
 }
 
 module "subnets" {
-  source              = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=master"
+  source              = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=0.4.0"
   availability_zones  = ["${var.availability_zones}"]
   namespace           = "${var.namespace}"
   stage               = "${var.stage}"
@@ -28,7 +28,7 @@ module "subnets" {
 }
 
 module "codefresh_backing_services" {
-  source          = "git::https://github.com/cloudposse/terraform-aws-codefresh-backing-services.git?ref=master"
+  source          = "git::https://github.com/cloudposse/terraform-aws-codefresh-backing-services.git?ref=0.1.0"
   enabled         = "true"
   name            = "${var.name}"
   namespace       = "${var.namespace}"

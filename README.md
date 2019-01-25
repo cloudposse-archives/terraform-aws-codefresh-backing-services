@@ -44,11 +44,9 @@ We literally have [*hundreds of terraform modules*][terraform_modules] that are 
 ## Introduction
 
 The module provisions the following resources:
-- AWS Aurora cluster
+- AWS Aurora Postgresql
 - AWS Elasticache Redis
-- AWS AmazonMQ (ActiveMQ)
 - AWS S3 bucket with associated user and permissions
-- AWS EFS
 
 ## Usage
 
@@ -90,7 +88,6 @@ Available targets:
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
 | attributes | Additional attributes (e.g. `1`) | list | `<list>` | no |
-| aws_assume_role_arn |  | string | - | yes |
 | chamber_format | Format to store parameters in SSM, for consumption with chamber | string | `/%s/%s` | no |
 | chamber_service | `chamber` service name. See [chamber usage](https://github.com/segmentio/chamber#usage) for more details | string | `` | no |
 | delimiter | Delimiter to be used between `namespace`, `stage`, `name` and `attributes` | string | `-` | no |

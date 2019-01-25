@@ -57,11 +57,9 @@ description: |-
 
 introduction: |-
   The module provisions the following resources:
-  - AWS Aurora cluster
+  - AWS Aurora Postgresql
   - AWS Elasticache Redis
-  - AWS AmazonMQ (ActiveMQ)
   - AWS S3 bucket with associated user and permissions
-  - AWS EFS
 
 # How to use this project
 usage: |-
