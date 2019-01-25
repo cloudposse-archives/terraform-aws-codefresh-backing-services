@@ -29,9 +29,6 @@ badges:
     url: "https://slack.cloudposse.com"
 
 related:
-  - name: "terraform-null-label"
-    description: "Terraform Module to define a consistent naming convention by (namespace, stage, name, [attributes])"
-    url: "https://github.com/cloudposse/terraform-null-label"
   - name: "terraform-aws-rds-cluster"
     description: "Terraform module to provision an RDS Aurora cluster for MySQL or Postgres"
     url: "https://github.com/cloudposse/terraform-aws-rds-cluster"
@@ -56,21 +53,33 @@ related:
 
 # Short description of this project
 description: |-
-  Terraform module to provision CodeFresh Enterprise backing services for usage with a kops cluster
+  Terraform module to provision CodeFresh Enterprise backing services
 
 introduction: |-
   The module provisions the following resources:
-  - AWS Aurora primary
-  - AWS Aurora read replica
+  - AWS Aurora Postgresql
   - AWS Elasticache Redis
-  - AWS AmazonMQ (ActiveMQ)
+  - AWS S3 bucket with associated user and permissions
+
+  **NOTE:** This module can be enabled or disabled in entirety using the `enabled` flag or you can override certain services e.g. `s3_enabled = "true"` which will enable only the S3 backing service resources given `enabled = "false"`
 
 # How to use this project
 usage: |-
+  ```terraform
+  module "codefresh_backing_services" {
+    source          = "git::https://github.com/cloudposse/terraform-aws-codefresh-backing-services.git?ref=master"
+    enabled         = "true"
+    name            = "${var.name}"
+    namespace       = "${var.namespace}"
+    region          = "${var.region}"
+    stage           = "${var.stage}"
+    vpc_id          = "${module.vpc.vpc_id}"
+    subnet_ids      = ["${module.subnets.private_subnet_ids}"]
+    security_groups = ["${module.vpc.vpc_default_security_group_id}"]
+  }
+  ```
 
   For a complete example, see [examples/complete](examples/complete)
-  TODO
-
 
 include:
   - "docs/targets.md"
