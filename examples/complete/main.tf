@@ -42,33 +42,11 @@ module "codefresh_backing_services" {
   chamber_service = "codefresh-backing-services"
   kms_key_id      = "${format("alias/%s-%s-chamber", var.namespace, var.stage)}"
 
-  efs_enabled = "false"
-
-  s3_enabled = "false"
-
-  mq_apply_immediately          = "false"
-  mq_audit_log                  = "false:"
-  mq_auto_minor_version_upgrade = "true"
-  mq_deployment_mode            = "ACTIVE_STANDBY_MULTI_AZ"
-  mq_engine_type                = "ActiveMQ"
-  mq_engine_version             = "5.15.0"
-  mq_general_log                = "true"
-  mq_host_instance_type         = "mq.t2.micro"
-  mq_maintenance_day_of_week    = "MONDAY"
-  mq_maintenance_time_of_day    = "02:00"
-  mq_maintenance_time_zone      = "CET"
-  mq_publicly_accessible        = "false"
-  mq_subnet_ids                 = "${local.mq_subnet_ids}"
-
-  postgres_admin_password     = "mypostgrespassword"
-  postgres_admin_user         = "userformyawesomeapp"
   postgres_instance_type      = "db.r4.large"
   postgres_maintenance_window = "mon:03:00-mon:04:00"
   postgres_name               = "my_app"
   postgres_db_name            = "db1"
 
-  redis_at_rest_encryption_enabled = "true"
-  redis_auth_token                 = "myawesomeauthtoken"
   redis_automatic_failover         = "true"
   redis_cluster_size               = "2"
   redis_engine_version             = "3.2.6"
