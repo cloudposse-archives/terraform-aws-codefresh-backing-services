@@ -61,6 +61,8 @@ introduction: |-
   - AWS Elasticache Redis
   - AWS S3 bucket with associated user and permissions
 
+  **NOTE:** This module can be enabled or disabled in entirety using the `enabled` flag or you can override certain services e.g. `s3_enabled = "true"` which will enable only the S3 backing service resources given `enabled = "false"`
+
 # How to use this project
 usage: |-
   ```terraform
@@ -78,7 +80,6 @@ usage: |-
   ```
 
   For a complete example, see [examples/complete](examples/complete)
-  TODO
 
 include:
   - "docs/targets.md"

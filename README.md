@@ -48,6 +48,8 @@ The module provisions the following resources:
 - AWS Elasticache Redis
 - AWS S3 bucket with associated user and permissions
 
+**NOTE:** This module can be enabled or disabled in entirety using the `enabled` flag or you can override certain services e.g. `s3_enabled = "true"` which will enable only the S3 backing service resources given `enabled = "false"`
+
 ## Usage
 
 ```terraform
@@ -65,7 +67,6 @@ module "codefresh_backing_services" {
 ```
 
 For a complete example, see [examples/complete](examples/complete)
-TODO
 
 
 
