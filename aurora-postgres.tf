@@ -66,6 +66,7 @@ module "aurora_postgres" {
   namespace          = "${var.namespace}"
   stage              = "${var.stage}"
   name               = "${var.name}"
+  attributes         = ["postgresql"]
   engine             = "aurora-postgresql"
   cluster_family     = "${var.postgres_cluster_family}"
   instance_type      = "${var.postgres_instance_type}"

@@ -74,7 +74,8 @@ variable "mq_maintenance_time_zone" {
 # supply 2 subnets. Any more and the resource will complain. Similarly
 # you must pass a single subnet if running in SINGLE_INSTANCE mode
 locals {
-  mq_subnet_ids = "${var.mq_deployment_mode == "ACTIVE_STANDBY_MULTI_AZ" ? slice(var.subnet_ids,0,2) : slice(var.subnet_ids,0,1)}"
+  mq_subnets_count = "${var.mq_deployment_mode == "ACTIVE_STANDBY_MULTI_AZ" ? 2 : 1}"
+  mq_subnet_ids = ["${slice(var.subnet_ids, 0, local.mq_subnets_count)}"]
 }
 
 module "amq" {
@@ -82,6 +83,7 @@ module "amq" {
   namespace                  = "${var.namespace}"
   stage                      = "${var.stage}"
   name                       = "${var.name}"
+  attributes                 = ["mq"]
   apply_immediately          = "${var.mq_apply_immediately}"
   auto_minor_version_upgrade = "${var.mq_auto_minor_version_upgrade}"
   deployment_mode            = "${var.mq_deployment_mode}"

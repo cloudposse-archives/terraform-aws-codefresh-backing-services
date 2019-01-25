@@ -91,6 +91,7 @@ module "elasticache_redis" {
   namespace                    = "${var.namespace}"
   stage                        = "${var.stage}"
   name                         = "${var.name}"
+  attributes                   = ["red"]
   zone_id                      = "${local.zone_id}"
   security_groups              = ["${var.security_groups}"]
   vpc_id                       = "${var.vpc_id}"

@@ -17,7 +17,7 @@ variable "aws_assume_role_arn" {
 variable "name" {
   type        = "string"
   description = "Name  (e.g. `codefresh`)"
-  default     = "codefresh"
+  default     = "cf"
 }
 
 variable "namespace" {
