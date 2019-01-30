@@ -40,7 +40,7 @@ locals {
 }
 
 module "s3_bucket" {
-  source                 = "git::https://github.com/cloudposse/terraform-aws-s3-bucket.git?ref=tags/0.1.0"
+  source                 = "git::https://github.com/cloudposse/terraform-aws-s3-bucket.git?ref=tags/0.2.0"
   enabled                = "${local.s3_enabled}"
   user_enabled           = "${local.s3_user_enabled}"
   versioning_enabled     = "${var.s3_versioning_enabled}"
