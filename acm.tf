@@ -18,7 +18,6 @@ variable "acm_ttl" {
   description = "The TTL of the record to add to the DNS zone to complete certificate validation"
 }
 
-
 variable "acm_zone_name" {
   type        = "string"
   default     = ""
