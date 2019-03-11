@@ -18,6 +18,13 @@ variable "acm_ttl" {
   description = "The TTL of the record to add to the DNS zone to complete certificate validation"
 }
 
+
+variable "acm_zone_name" {
+  type        = "string"
+  default     = ""
+  description = "The name of the desired Route53 Hosted Zone"
+}
+
 module "acm_request_certificate" {
   source                            = "git::https://github.com/cloudposse/terraform-aws-acm-request-certificate.git?ref=add/enabled-var"
   enabled                           = "${var.acm_enabled}"
@@ -25,6 +32,7 @@ module "acm_request_certificate" {
   process_domain_validation_options = "true"
   ttl                               = "${var.acm_ttl}"
   subject_alternative_names         = ["${var.acm_san_domains}"]
+  zone_name                         = "${var.acm_zone_name}"
 }
 
 output "acm_id" {
