@@ -48,3 +48,8 @@ output "acm_domain_validation_options" {
   value       = "${module.acm_request_certificate.domain_validation_options}"
   description = "CNAME records that are added to the DNS zone to complete certificate validation"
 }
+
+output "acm_email_validation_options" {
+  value       = ["${module.acm_request_certificate.validation_emails}"]
+  description = " A list of addresses that received a validation E-Mail"
+}
