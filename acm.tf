@@ -50,6 +50,6 @@ output "acm_domain_validation_options" {
 }
 
 output "acm_email_validation_options" {
-  value       = ["${module.acm_request_certificate.validation_emails}"]
+  value       = ["${module.acm_request_certificate.email_validation_options}"]
   description = " A list of addresses that received a validation E-Mail"
 }
