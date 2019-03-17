@@ -13,43 +13,29 @@ variable "acm_san_domains" {
   description = "A list of domains that should be SANs in the issued certificate"
 }
 
-variable "acm_ttl" {
-  default = 300
-  description = "The TTL of the record to add to the DNS zone to complete certificate validation"
-}
+resource "aws_acm_certificate" "default" {
+  count                     = "${var.acm_enabled ? 1 : 0}"
+  domain_name               = "${var.acm_primary_domain}"
+  validation_method         = "DNS"
+  subject_alternative_names = ["${var.acm_san_domains}"]
+  tags                      = "${var.tags}"
 
-variable "acm_zone_name" {
-  type        = "string"
-  default     = ""
-  description = "The name of the desired Route53 Hosted Zone"
-}
-
-module "acm_request_certificate" {
-  source                            = "git::https://github.com/cloudposse/terraform-aws-acm-request-certificate.git?ref=add/enabled-var"
-  enabled                           = "${var.acm_enabled}"
-  domain_name                       = "${var.acm_primary_domain}"
-  process_domain_validation_options = "true"
-  ttl                               = "${var.acm_ttl}"
-  subject_alternative_names         = ["${var.acm_san_domains}"]
-  zone_name                         = "${var.acm_zone_name}"
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 output "acm_id" {
-  value       = "${module.acm_request_certificate.id}"
+  value       = "${join("", aws_acm_certificate.default.*.id)}"
   description = "The ARN of the certificate"
 }
 
 output "acm_arn" {
-  value       = "${module.acm_request_certificate.arn}"
+  value       = "${join("", aws_acm_certificate.default.*.arn)}"
   description = "The ARN of the certificate"
 }
 
 output "acm_domain_validation_options" {
-  value       = "${module.acm_request_certificate.domain_validation_options}"
+  value       = "${flatten(aws_acm_certificate.default.*.domain_validation_options)}"
   description = "CNAME records that are added to the DNS zone to complete certificate validation"
-}
-
-output "acm_email_validation_options" {
-  value       = ["${module.acm_request_certificate.email_validation_options}"]
-  description = " A list of addresses that received a validation E-Mail"
 }
