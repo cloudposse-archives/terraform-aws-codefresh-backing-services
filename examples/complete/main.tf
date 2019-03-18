@@ -8,7 +8,6 @@ module "vpc" {
   stage      = "${var.stage}"
   name       = "${var.name}"
   attributes = "${var.attributes}"
-  tags       = "${local.tags}"
   cidr_block = "${var.vpc_cidr_block}"
 }
 
@@ -19,7 +18,6 @@ module "subnets" {
   stage               = "${var.stage}"
   name                = "${var.name}"
   attributes          = "${var.attributes}"
-  tags                = "${local.tags}"
   region              = "${var.region}"
   vpc_id              = "${module.vpc.vpc_id}"
   igw_id              = "${module.vpc.igw_id}"
@@ -28,7 +26,7 @@ module "subnets" {
 }
 
 module "codefresh_backing_services" {
-  source          = "git::https://github.com/cloudposse/terraform-aws-codefresh-backing-services.git?ref=0.1.0"
+  source          = "../../"
   enabled         = "true"
   name            = "${var.name}"
   namespace       = "${var.namespace}"
@@ -37,6 +35,10 @@ module "codefresh_backing_services" {
   vpc_id          = "${module.vpc.vpc_id}"
   subnet_ids      = ["${module.subnets.private_subnet_ids}"]
   security_groups = ["${module.vpc.vpc_default_security_group_id}"]
+
+  acm_enabled        = "true"
+  acm_primary_domain = "example.com"
+  acm_san_domains    = ["*.example.com"]
 
   chamber_format  = "/%s/%s"
   chamber_service = "codefresh-backing-services"
