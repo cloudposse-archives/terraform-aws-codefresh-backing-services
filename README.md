@@ -90,7 +90,6 @@ Available targets:
 | acm_enabled | Set to false to prevent the acm module from creating any resources | string | `true` | no |
 | acm_primary_domain | A domain name for which the certificate should be issued | string | - | yes |
 | acm_san_domains | A list of domains that should be SANs in the issued certificate | list | `<list>` | no |
-| acm_ttl | The TTL of the record to add to the DNS zone to complete certificate validation | string | `300` | no |
 | attributes | Additional attributes (e.g. `1`) | list | `<list>` | no |
 | chamber_format | Format to store parameters in SSM, for consumption with chamber | string | `/%s/%s` | no |
 | chamber_service | `chamber` service name. See [chamber usage](https://github.com/segmentio/chamber#usage) for more details | string | `` | no |
