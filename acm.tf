@@ -25,11 +25,6 @@ resource "aws_acm_certificate" "default" {
   }
 }
 
-output "acm_id" {
-  value       = "${join("", aws_acm_certificate.default.*.id)}"
-  description = "The ARN of the certificate"
-}
-
 output "acm_arn" {
   value       = "${join("", aws_acm_certificate.default.*.arn)}"
   description = "The ARN of the certificate"

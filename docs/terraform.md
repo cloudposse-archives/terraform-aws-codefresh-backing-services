@@ -52,7 +52,6 @@
 |------|-------------|
 | acm_arn | The ARN of the certificate |
 | acm_domain_validation_options | CNAME records that are added to the DNS zone to complete certificate validation |
-| acm_id | The ARN of the certificate |
 | aurora_postgres_cluster_name | Aurora Postgres Cluster Identifier |
 | aurora_postgres_database_name | Aurora Postgres Database name |
 | aurora_postgres_master_hostname | Aurora Postgres DB Master hostname |
