@@ -8,7 +8,7 @@
  [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-codefresh-backing-services.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-codefresh-backing-services) [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-codefresh-backing-services.svg)](https://github.com/cloudposse/terraform-aws-codefresh-backing-services/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
 
 
-Terraform module to provision CodeFresh Enterprise backing services
+Terraform module to provision [CodeFresh Enterprise](https://codefresh.io/enterprise/) backing services
 
 
 ---
@@ -44,9 +44,10 @@ We literally have [*hundreds of terraform modules*][terraform_modules] that are 
 ## Introduction
 
 The module provisions the following resources:
-- AWS Aurora Postgresql
-- AWS Elasticache Redis
+- AWS [Aurora PostgreSQL](https://aws.amazon.com/rds/aurora/details/postgresql-details/) cluster
+- AWS [ElastiCache Redis](https://aws.amazon.com/elasticache/redis/)
 - AWS S3 bucket with associated user and permissions
+- Amazon [DocumentDB](https://aws.amazon.com/documentdb/) cluster (with [MongoDB](https://www.mongodb.com/) compatibility)
 
 **NOTE:** This module can be enabled or disabled in entirety using the `enabled` flag or you can override certain services e.g. `s3_enabled = "true"` which will enable only the S3 backing service resources given `enabled = "false"`
 
@@ -91,12 +92,12 @@ Available targets:
 | acm_primary_domain | A domain name for which the certificate should be issued | string | - | yes |
 | acm_san_domains | A list of domains that should be SANs in the issued certificate | list | `<list>` | no |
 | attributes | Additional attributes (e.g. `1`) | list | `<list>` | no |
-| chamber_format | Format to store parameters in SSM, for consumption with chamber | string | `/%s/%s` | no |
+| chamber_format | Format to store parameters in SSM, for consumption with `chamber` | string | `/%s/%s` | no |
 | chamber_service | `chamber` service name. See [chamber usage](https://github.com/segmentio/chamber#usage) for more details | string | `` | no |
 | delimiter | Delimiter to be used between `namespace`, `stage`, `name` and `attributes` | string | `-` | no |
 | enabled | Set to false to prevent the module from creating any resources | string | `true` | no |
 | kms_key_id | KMS key ID used to encrypt SSM parameters | string | `` | no |
-| name | Name  (e.g. `codefresh`) | string | `cf` | no |
+| name | Name  (e.g. `cf` or `codefresh`) | string | `cf` | no |
 | namespace | Namespace (e.g. `eg` or `cp`) | string | - | yes |
 | overwrite_ssm_parameter | Whether to overwrite an existing SSM parameter | string | `true` | no |
 | postgres_admin_password | Postgres password for the admin user | string | `` | no |
@@ -173,6 +174,7 @@ Check out these related projects.
 - [terraform-aws-rds-cluster-instance-group](https://github.com/cloudposse/terraform-aws-rds-cluster-instance-group) - Terraform module to provision an RDS cluster instance pool with a dedicated endpoint
 - [terraform-aws-vpc](https://github.com/cloudposse/terraform-aws-vpc) - Terraform Module that defines a VPC with public/private subnets across multiple AZs with Internet Gateways
 - [terraform-aws-dynamic-subnets](https://github.com/cloudposse/terraform-aws-dynamic-subnets) - Terraform module for public and private subnets provisioning in existing VPC
+- [terraform-aws-documentdb-cluster](https://github.com/cloudposse/terraform-aws-documentdb-cluster) - Terraform module to provision a DocumentDB cluster on AWS
 
 
 

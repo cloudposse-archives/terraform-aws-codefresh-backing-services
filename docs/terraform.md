@@ -6,12 +6,12 @@
 | acm_primary_domain | A domain name for which the certificate should be issued | string | - | yes |
 | acm_san_domains | A list of domains that should be SANs in the issued certificate | list | `<list>` | no |
 | attributes | Additional attributes (e.g. `1`) | list | `<list>` | no |
-| chamber_format | Format to store parameters in SSM, for consumption with chamber | string | `/%s/%s` | no |
+| chamber_format | Format to store parameters in SSM, for consumption with `chamber` | string | `/%s/%s` | no |
 | chamber_service | `chamber` service name. See [chamber usage](https://github.com/segmentio/chamber#usage) for more details | string | `` | no |
 | delimiter | Delimiter to be used between `namespace`, `stage`, `name` and `attributes` | string | `-` | no |
 | enabled | Set to false to prevent the module from creating any resources | string | `true` | no |
 | kms_key_id | KMS key ID used to encrypt SSM parameters | string | `` | no |
-| name | Name  (e.g. `codefresh`) | string | `cf` | no |
+| name | Name  (e.g. `cf` or `codefresh`) | string | `cf` | no |
 | namespace | Namespace (e.g. `eg` or `cp`) | string | - | yes |
 | overwrite_ssm_parameter | Whether to overwrite an existing SSM parameter | string | `true` | no |
 | postgres_admin_password | Postgres password for the admin user | string | `` | no |
