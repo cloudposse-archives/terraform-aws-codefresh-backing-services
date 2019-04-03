@@ -69,7 +69,7 @@ introduction: |-
 
 # How to use this project
 usage: |-
-  ```terraform
+  ```hcl
   module "codefresh_backing_services" {
     source          = "git::https://github.com/cloudposse/terraform-aws-codefresh-backing-services.git?ref=master"
     enabled         = "true"

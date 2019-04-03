@@ -53,7 +53,7 @@ The module provisions the following resources:
 
 ## Usage
 
-```terraform
+```hcl
 module "codefresh_backing_services" {
   source          = "git::https://github.com/cloudposse/terraform-aws-codefresh-backing-services.git?ref=master"
   enabled         = "true"
