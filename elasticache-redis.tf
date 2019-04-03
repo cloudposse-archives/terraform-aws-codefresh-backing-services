@@ -12,7 +12,7 @@ variable "redis_cluster_size" {
 
 variable "redis_cluster_enabled" {
   type        = "string"
-  default     = ""
+  default     = "true"
   description = "Set to false to prevent the module from creating any resources"
 }
 
@@ -65,7 +65,7 @@ variable "redis_apply_immediately" {
 }
 
 locals {
-  redis_cluster_enabled = "${var.redis_cluster_enabled != "" ? var.redis_cluster_enabled : var.enabled}"
+  redis_cluster_enabled = "${var.enabled == "true" && var.redis_cluster_enabled == "true" ? "true" : "false"}"
   redis_family          = "${format("redis%s", join(".", slice(split(".", var.redis_engine_version),0,2)))}"
   redis_auth_token      = "${length(var.redis_auth_token) > 0 ? var.redis_auth_token : join("", random_string.redis_auth_token.*.result)}"
 }

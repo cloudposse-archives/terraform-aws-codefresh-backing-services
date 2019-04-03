@@ -1,4 +1,4 @@
-# Don't use `admin` 
+# Don't use `admin`
 # Read more: <https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Limits.html>
 # ("MasterUsername admin cannot be used as it is a reserved word used by the engine")
 variable "postgres_admin_user" {
@@ -38,7 +38,7 @@ variable "postgres_cluster_size" {
 
 variable "postgres_cluster_enabled" {
   type        = "string"
-  default     = ""
+  default     = "true"
   description = "Set to false to prevent the module from creating any resources"
 }
 
@@ -55,7 +55,7 @@ variable "postgres_maintenance_window" {
 }
 
 locals {
-  postgres_cluster_enabled = "${var.postgres_cluster_enabled != "" ? var.postgres_cluster_enabled : var.enabled}"
+  postgres_cluster_enabled = "${var.enabled == "true" && var.postgres_cluster_enabled == "true" ? "true" : "false"}"
   postgres_admin_user      = "${length(var.postgres_admin_user) > 0 ? var.postgres_admin_user : join("", random_string.postgres_admin_user.*.result)}"
   postgres_admin_password  = "${length(var.postgres_admin_password) > 0 ? var.postgres_admin_password : join("", random_string.postgres_admin_password.*.result)}"
   postgres_db_name         = "${var.postgres_db_name != "" ? var.postgres_db_name : join("", random_pet.postgres_db_name.*.id)}"
