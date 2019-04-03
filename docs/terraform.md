@@ -18,8 +18,8 @@
 | documentdb_engine | The name of the database engine to be used for this DB cluster. Defaults to `docdb`. Valid values: `docdb` | string | `docdb` | no |
 | documentdb_engine_version | The version number of the database engine to use | string | `` | no |
 | documentdb_instance_class | The instance class to use. For more details, see https://docs.aws.amazon.com/documentdb/latest/developerguide/db-instance-classes.html#db-instance-class-specs | string | `db.r4.large` | no |
-| documentdb_master_password | (Required unless a `documentdb_snapshot_identifier` is provided) Password for the master DB user. Note that this may show up in logs, and it will be stored in the state file. Please refer to the DocumentDB Naming Constraints | string | `` | no |
-| documentdb_master_username | (Required unless a `documentdb_snapshot_identifier` is provided) Username for the master DB user | string | `` | no |
+| documentdb_master_password | Password for the master DB user. If left empty, will be generated automatically. Note that this may show up in logs, and it will be stored in the state file | string | `` | no |
+| documentdb_master_username | Username for the master DB user. If left empty, will be generated automatically | string | `` | no |
 | documentdb_port | DocumentDB port | string | `27017` | no |
 | documentdb_preferred_backup_window | Daily time range during which the backups happen | string | `07:00-09:00` | no |
 | documentdb_retention_period | Number of days to retain backups for | string | `5` | no |

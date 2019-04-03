@@ -24,13 +24,13 @@ variable "documentdb_port" {
 variable "documentdb_master_username" {
   type        = "string"
   default     = ""
-  description = "(Required unless a `documentdb_snapshot_identifier` is provided) Username for the master DB user"
+  description = "Username for the master DB user. If left empty, will be generated automatically"
 }
 
 variable "documentdb_master_password" {
   type        = "string"
   default     = ""
-  description = "(Required unless a `documentdb_snapshot_identifier` is provided) Password for the master DB user. Note that this may show up in logs, and it will be stored in the state file. Please refer to the DocumentDB Naming Constraints"
+  description = "Password for the master DB user. If left empty, will be generated automatically. Note that this may show up in logs, and it will be stored in the state file"
 }
 
 variable "documentdb_retention_period" {
