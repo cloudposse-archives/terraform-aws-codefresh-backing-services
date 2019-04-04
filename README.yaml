@@ -50,22 +50,26 @@ related:
   - name: "terraform-aws-dynamic-subnets"
     description: "Terraform module for public and private subnets provisioning in existing VPC"
     url: "https://github.com/cloudposse/terraform-aws-dynamic-subnets"
+  - name: "terraform-aws-documentdb-cluster"
+    description: "Terraform module to provision a DocumentDB cluster on AWS"
+    url: "https://github.com/cloudposse/terraform-aws-documentdb-cluster"
 
 # Short description of this project
 description: |-
-  Terraform module to provision CodeFresh Enterprise backing services
+  Terraform module to provision [CodeFresh Enterprise](https://codefresh.io/enterprise/) backing services
 
 introduction: |-
   The module provisions the following resources:
-  - AWS Aurora Postgresql
-  - AWS Elasticache Redis
+  - AWS [Aurora PostgreSQL](https://aws.amazon.com/rds/aurora/details/postgresql-details/) cluster
+  - AWS [ElastiCache Redis](https://aws.amazon.com/elasticache/redis/)
   - AWS S3 bucket with associated user and permissions
+  - Amazon [DocumentDB](https://aws.amazon.com/documentdb/) cluster (with [MongoDB](https://www.mongodb.com/) compatibility)
 
   **NOTE:** This module can be enabled or disabled in entirety using the `enabled` flag or you can override certain services e.g. `s3_enabled = "true"` which will enable only the S3 backing service resources given `enabled = "false"`
 
 # How to use this project
 usage: |-
-  ```terraform
+  ```hcl
   module "codefresh_backing_services" {
     source          = "git::https://github.com/cloudposse/terraform-aws-codefresh-backing-services.git?ref=master"
     enabled         = "true"

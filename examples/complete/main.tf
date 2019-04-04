@@ -36,6 +36,8 @@ module "codefresh_backing_services" {
   subnet_ids      = ["${module.subnets.private_subnet_ids}"]
   security_groups = ["${module.vpc.vpc_default_security_group_id}"]
 
+  zone_name = "example.com"
+
   acm_enabled        = "true"
   acm_primary_domain = "example.com"
   acm_san_domains    = ["*.example.com"]
@@ -44,14 +46,20 @@ module "codefresh_backing_services" {
   chamber_service = "codefresh-backing-services"
   kms_key_id      = "${format("alias/%s-%s-chamber", var.namespace, var.stage)}"
 
+  postgres_cluster_enabled    = "true"
   postgres_instance_type      = "db.r4.large"
   postgres_maintenance_window = "mon:03:00-mon:04:00"
   postgres_name               = "my_app"
   postgres_db_name            = "db1"
 
-  redis_automatic_failover         = "true"
-  redis_cluster_size               = "2"
-  redis_engine_version             = "3.2.6"
-  redis_instance_type              = "cache.t2.medium"
-  redis_name                       = "rediscacheformyawesomeapp"
+  redis_cluster_enabled    = "true"
+  redis_automatic_failover = "true"
+  redis_cluster_size       = "2"
+  redis_engine_version     = "3.2.6"
+  redis_instance_type      = "cache.t2.medium"
+  redis_name               = "rediscacheformyawesomeapp"
+
+  documentdb_cluster_enabled = "true"
+  documentdb_instance_class  = "db.r4.large"
+  documentdb_cluster_size    = "3"
 }

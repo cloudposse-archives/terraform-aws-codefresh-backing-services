@@ -12,14 +12,8 @@ variable "stage" {
 
 variable "name" {
   type        = "string"
-  default     = "eks"
-  description = "Solution name, e.g. 'app' or 'cluster'"
-}
-
-variable "delimiter" {
-  type        = "string"
-  default     = "-"
-  description = "Delimiter to be used between `name`, `namespace`, `stage`, etc."
+  default     = "codefresh"
+  description = "Solution name, e.g. 'codefresh' or 'cf'"
 }
 
 variable "attributes" {
@@ -28,31 +22,9 @@ variable "attributes" {
   description = "Additional attributes (e.g. `1`)"
 }
 
-variable "tags" {
-  type        = "map"
-  default     = {}
-  description = "Additional tags (e.g. `map('BusinessUnit`,`XYZ`)"
-}
-
-variable "enabled" {
-  type        = "string"
-  description = "Whether to create the resources. Set to `false` to prevent the module from creating any resources"
-  default     = "true"
-}
-
-variable "chamber_format" {
-  default     = "/%s/%s"
-  description = "Format to store parameters in SSM, for consumption with chamber"
-}
-
-variable "chamber_service" {
-  default     = ""
-  description = "`chamber` service name. See [chamber usage](https://github.com/segmentio/chamber#usage) for more details"
-}
-
 variable "region" {
   type        = "string"
-  default     = "us-east-1"
+  default     = "us-west-2"
   description = "AWS Region"
 }
 
@@ -64,12 +36,6 @@ variable "vpc_cidr_block" {
 
 variable "availability_zones" {
   type        = "list"
-  default     = ["us-east-1a", "us-east-1b", "us-east-1c", "us-east-1d"]
+  default     = ["us-west-2a", "us-west-2b", "us-west-2c"]
   description = "Availability Zones for the cluster"
-}
-
-variable "mq_apply_immediately" {
-  type        = "string"
-  description = "Specifies whether any cluster modifications are applied immediately, or during the next maintenance window"
-  default     = "true"
 }

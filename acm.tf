@@ -8,8 +8,8 @@ variable "acm_primary_domain" {
 }
 
 variable "acm_san_domains" {
-  type = "list"
-  default =  []
+  type        = "list"
+  default     = []
   description = "A list of domains that should be SANs in the issued certificate"
 }
 

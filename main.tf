@@ -1,6 +1,6 @@
 variable "name" {
   type        = "string"
-  description = "Name  (e.g. `codefresh`)"
+  description = "Name  (e.g. `cf` or `codefresh`)"
   default     = "cf"
 }
 
@@ -27,7 +27,7 @@ variable "kms_key_id" {
 
 variable "chamber_format" {
   default     = "/%s/%s"
-  description = "Format to store parameters in SSM, for consumption with chamber"
+  description = "Format to store parameters in SSM, for consumption with `chamber`"
 }
 
 variable "chamber_service" {
