@@ -97,7 +97,7 @@ locals {
 }
 
 module "documentdb_cluster" {
-  source                          = "git::https://github.com/cloudposse/terraform-aws-documentdb-cluster.git?ref=tags/0.1.0"
+  source                          = "git::https://github.com/cloudposse/terraform-aws-documentdb-cluster.git?ref=tags/0.2.0"
   enabled                         = "${local.documentdb_cluster_enabled}"
   namespace                       = "${var.namespace}"
   stage                           = "${var.stage}"
@@ -113,6 +113,8 @@ module "documentdb_cluster" {
   vpc_id                          = "${var.vpc_id}"
   subnet_ids                      = ["${var.subnet_ids}"]
   zone_id                         = "${local.zone_id}"
+  cluster_dns_name                = "docdb-master.${var.name}"
+  reader_dns_name                 = "docdb-replicas.${var.name}"
   allowed_security_groups         = ["${var.security_groups}"]
   apply_immediately               = "${var.documentdb_apply_immediately}"
   enabled_cloudwatch_logs_exports = ["${var.documentdb_enabled_cloudwatch_logs_exports}"]
