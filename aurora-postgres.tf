@@ -122,7 +122,7 @@ resource "aws_ssm_parameter" "aurora_postgres_master_username" {
 resource "aws_ssm_parameter" "aurora_postgres_master_password" {
   count       = "${local.postgres_cluster_enabled == "true" ? 1 : 0}"
   name        = "${format(var.chamber_format, local.chamber_service, "aurora_postgres_master_password")}"
-  value       = "${module.aurora_postgres.password}"
+  value       = "${local.postgres_admin_password}"
   description = "Aurora Postgres Password for the master DB user"
   type        = "SecureString"
   key_id      = "${data.aws_kms_key.chamber_kms_key.id}"
