@@ -47,7 +47,12 @@ variable "documentdb_preferred_backup_window" {
 
 variable "documentdb_cluster_parameters" {
   type        = "list"
-  default     = []
+  default     = [
+    {
+      name  = "tls"
+      value = "disabled"
+    }
+  ]
   description = "List of DB parameters to apply"
 }
 
