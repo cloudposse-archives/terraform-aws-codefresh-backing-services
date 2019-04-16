@@ -21,6 +21,12 @@ variable "documentdb_port" {
   description = "DocumentDB port"
 }
 
+variable "documentdb_chamber_parameters_mapping" {
+  type        = "map"
+  default     = {}
+  description = "Allow to specify keys names for chamber to store values"
+}
+
 variable "documentdb_master_username" {
   type        = "string"
   default     = ""
@@ -101,6 +107,7 @@ locals {
   documentdb_cluster_enabled = "${var.enabled == "true" && var.documentdb_cluster_enabled == "true" ? "true" : "false"}"
   documentdb_master_username = "${length(var.documentdb_master_username) > 0 ? var.documentdb_master_username : join("", random_string.documentdb_master_username.*.result)}"
   documentdb_master_password = "${length(var.documentdb_master_password) > 0 ? var.documentdb_master_password : join("", random_string.documentdb_master_password.*.result)}"
+  documentdb_connection_uri  = "${format("mongodb://%s:%s@%s:%s",  local.documentdb_master_username, local.documentdb_master_password, module.documentdb_cluster.endpoint, var.documentdb_port)}"
 }
 
 module "documentdb_cluster" {
@@ -150,7 +157,7 @@ resource "random_string" "documentdb_master_password" {
 
 resource "aws_ssm_parameter" "documentdb_master_username" {
   count       = "${local.documentdb_cluster_enabled == "true" ? 1 : 0}"
-  name        = "${format(var.chamber_format, local.chamber_service, "documentdb_master_username")}"
+  name        = "${format(var.chamber_format, local.chamber_service, lookup(var.documentdb_chamber_parameters_mapping, "documentdb_master_username", "documentdb_master_username"))}"
   value       = "${local.documentdb_master_username}"
   description = "DocumentDB Username for the master DB user"
   type        = "String"
@@ -159,7 +166,7 @@ resource "aws_ssm_parameter" "documentdb_master_username" {
 
 resource "aws_ssm_parameter" "documentdb_master_password" {
   count       = "${local.documentdb_cluster_enabled == "true" ? 1 : 0}"
-  name        = "${format(var.chamber_format, local.chamber_service, "documentdb_master_password")}"
+  name        = "${format(var.chamber_format, local.chamber_service, lookup(var.documentdb_chamber_parameters_mapping, "documentdb_master_password", "documentdb_master_password"))}"
   value       = "${local.documentdb_master_password}"
   description = "DocumentDB Password for the master DB user"
   type        = "SecureString"
@@ -169,7 +176,7 @@ resource "aws_ssm_parameter" "documentdb_master_password" {
 
 resource "aws_ssm_parameter" "documentdb_master_hostname" {
   count       = "${local.documentdb_cluster_enabled == "true" ? 1 : 0}"
-  name        = "${format(var.chamber_format, local.chamber_service, "documentdb_master_hostname")}"
+  name        = "${format(var.chamber_format, local.chamber_service, lookup(var.documentdb_chamber_parameters_mapping, "documentdb_master_hostname", "documentdb_master_hostname"))}"
   value       = "${module.documentdb_cluster.master_host}"
   description = "DocumentDB DB master hostname"
   type        = "String"
@@ -178,7 +185,7 @@ resource "aws_ssm_parameter" "documentdb_master_hostname" {
 
 resource "aws_ssm_parameter" "documentdb_replicas_hostname" {
   count       = "${local.documentdb_cluster_enabled == "true" ? 1 : 0}"
-  name        = "${format(var.chamber_format, local.chamber_service, "documentdb_replicas_hostname")}"
+  name        = "${format(var.chamber_format, local.chamber_service, lookup(var.documentdb_chamber_parameters_mapping, "documentdb_replicas_hostname", "documentdb_replicas_hostname"))}"
   value       = "${module.documentdb_cluster.replicas_host}"
   description = "DocumentDB DB replicas hostname"
   type        = "String"
@@ -187,9 +194,18 @@ resource "aws_ssm_parameter" "documentdb_replicas_hostname" {
 
 resource "aws_ssm_parameter" "documentdb_cluster_name" {
   count       = "${local.documentdb_cluster_enabled == "true" ? 1 : 0}"
-  name        = "${format(var.chamber_format, local.chamber_service, "documentdb_cluster_name")}"
+  name        = "${format(var.chamber_format, local.chamber_service, lookup(var.documentdb_chamber_parameters_mapping, "documentdb_cluster_name", "documentdb_cluster_name"))}"
   value       = "${module.documentdb_cluster.cluster_name}"
   description = "DocumentDB Cluster Identifier"
+  type        = "String"
+  overwrite   = "${var.overwrite_ssm_parameter}"
+}
+
+resource "aws_ssm_parameter" "documentdb_connection_uri" {
+  count       = "${local.documentdb_cluster_enabled == "true" ? 1 : 0}"
+  name        = "${format(var.chamber_format, local.chamber_service, lookup(var.documentdb_chamber_parameters_mapping, "documentdb_connection_uri", "documentdb_connection_uri"))}"
+  value       = "${local.documentdb_connection_uri}"
+  description = "DocumentDB connection URI"
   type        = "String"
   overwrite   = "${var.overwrite_ssm_parameter}"
 }
