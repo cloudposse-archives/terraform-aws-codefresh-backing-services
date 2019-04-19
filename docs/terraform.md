@@ -10,6 +10,7 @@
 | chamber_service | `chamber` service name. See [chamber usage](https://github.com/segmentio/chamber#usage) for more details | string | `` | no |
 | delimiter | Delimiter to be used between `namespace`, `stage`, `name` and `attributes` | string | `-` | no |
 | documentdb_apply_immediately | Specifies whether any cluster modifications are applied immediately, or during the next maintenance window | string | `true` | no |
+| documentdb_chamber_parameters_mapping | Allow to specify keys names for chamber to store values | map | `<map>` | no |
 | documentdb_cluster_enabled | Set to false to prevent the module from creating DocumentDB cluster | string | `true` | no |
 | documentdb_cluster_family | The family of the DocumentDB cluster parameter group. For more details, see https://docs.aws.amazon.com/documentdb/latest/developerguide/db-cluster-parameter-group-create.html | string | `docdb3.6` | no |
 | documentdb_cluster_parameters | List of DB parameters to apply | list | `<list>` | no |
