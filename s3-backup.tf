@@ -92,6 +92,6 @@ output "backup_s3_secret_access_key" {
 }
 
 output "backup_s3_bucket_arn" {
-  value       = "${module.backup_s3_bucket.backup_s3_bucket_arn}"
+  value       = "${module.backup_s3_bucket.s3_bucket_arn}"
   description = "The backup_s3 bucket ARN"
 }
