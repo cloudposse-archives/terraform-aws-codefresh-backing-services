@@ -18,13 +18,13 @@ variable "backup_s3_allowed_bucket_actions" {
 
 variable "backup_s3_access_key_name" {
   type        = "string"
-  default     = "backup_aws_access_key_id"
+  default     = "codefresh_backups_aws_access_key_id"
   description = "backup_s3 user IAM access key name for storing in SSM. Default to aws_acces_key_id so chamber exports as AWS_ACCESS_KEY_ID, a standard AWS IAM ENV variable"
 }
 
 variable "backup_s3_secret_key_name" {
   type        = "string"
-  default     = "backup_aws_secret_access_key"
+  default     = "codefresh_backups_aws_secret_access_key"
   description = "backup_s3 user IAM secret key name for storing in SSM. Default to aws_secret_acces_key so chamber exports as AWS_SECRET_ACCESS_KEY, a standard AWS IAM ENV variable "
 }
 
