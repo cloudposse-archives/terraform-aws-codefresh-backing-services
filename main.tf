@@ -1,3 +1,19 @@
+terraform {
+  required_version = ">= 0.11.2"
+
+  backend "s3" {}
+}
+
+provider "aws" {
+  assume_role {
+    role_arn = "${var.aws_assume_role_arn}"
+  }
+}
+
+variable "aws_assume_role_arn" {
+  type = "string"
+}
+
 variable "name" {
   type        = "string"
   description = "Name  (e.g. `cf` or `codefresh`)"
