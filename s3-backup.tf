@@ -12,7 +12,7 @@ variable "backup_s3_user_enabled" {
 
 variable "backup_s3_allowed_bucket_actions" {
   type        = "list"
-  default     = ["backup_s3:PutObject", "backup_s3:PutObjectAcl", "backup_s3:GetObject", "backup_s3:DeleteObject", "backup_s3:ListBucket", "backup_s3:ListBucketMultipartUploads", "backup_s3:GetBucketLocation", "backup_s3:AbortMultipartUpload"]
+  default     = ["s3:PutObject", "s3:PutObjectAcl", "s3:GetObject", "s3:DeleteObject", "s3:ListBucket", "s3:ListBucketMultipartUploads", "s3:GetBucketLocation", "s3:AbortMultipartUpload"]
   description = "List of actions to permit for backup_s3 bucket"
 }
 
