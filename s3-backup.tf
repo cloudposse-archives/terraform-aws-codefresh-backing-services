@@ -7,25 +7,25 @@ variable "backup_enabled" {
 variable "backup_s3_user_enabled" {
   type        = "string"
   default     = ""
-  description = "Set to `true` to create an backup_s3 user with permission to access the bucket"
+  description = "Set to `true` to create an user with permission to access the backup s3 bucket"
 }
 
 variable "backup_s3_allowed_bucket_actions" {
   type        = "list"
   default     = ["s3:PutObject", "s3:PutObjectAcl", "s3:GetObject", "s3:DeleteObject", "s3:ListBucket", "s3:ListBucketMultipartUploads", "s3:GetBucketLocation", "s3:AbortMultipartUpload"]
-  description = "List of actions to permit for backup_s3 bucket"
+  description = "List of actions to permit for backup s3 bucket"
 }
 
 variable "backup_s3_access_key_name" {
   type        = "string"
   default     = "codefresh_backups_aws_access_key_id"
-  description = "backup_s3 user IAM access key name for storing in SSM. Default to aws_acces_key_id so chamber exports as AWS_ACCESS_KEY_ID, a standard AWS IAM ENV variable"
+  description = "Backup s3 user IAM access key name for storing in SSM. Default to aws_acces_key_id so chamber exports as AWS_ACCESS_KEY_ID, a standard AWS IAM ENV variable"
 }
 
 variable "backup_s3_secret_key_name" {
   type        = "string"
   default     = "codefresh_backups_aws_secret_access_key"
-  description = "backup_s3 user IAM secret key name for storing in SSM. Default to aws_secret_acces_key so chamber exports as AWS_SECRET_ACCESS_KEY, a standard AWS IAM ENV variable "
+  description = "Backup s3 user IAM secret key name for storing in SSM. Default to aws_secret_acces_key so chamber exports as AWS_SECRET_ACCESS_KEY, a standard AWS IAM ENV variable "
 }
 
 locals {
@@ -66,32 +66,32 @@ resource "aws_ssm_parameter" "backup_s3_user_iam_secret_access_key" {
 
 output "backup_s3_user_name" {
   value       = "${module.backup_s3_bucket.user_name}"
-  description = "Normalized IAM user name"
+  description = "Normalized IAM backup user name"
 }
 
 output "backup_s3_user_arn" {
   value       = "${module.backup_s3_bucket.user_arn}"
-  description = "The ARN assigned by AWS for the user"
+  description = "The ARN assigned by AWS for the backup user"
 }
 
 output "backup_s3_user_unique_id" {
   value       = "${module.backup_s3_bucket.user_unique_id}"
-  description = "The user unique ID assigned by AWS"
+  description = "The backup user unique ID assigned by AWS"
 }
 
 output "backup_s3_access_key_id" {
   sensitive   = true
   value       = "${module.backup_s3_bucket.access_key_id}"
-  description = "The access key ID"
+  description = "The access key ID for backup user"
 }
 
 output "backup_s3_secret_access_key" {
   sensitive   = true
   value       = "${module.backup_s3_bucket.secret_access_key}"
-  description = "The secret access key. This will be written to the state file in plain-text"
+  description = "The secret access key for backup user. This will be written to the state file in plain-text"
 }
 
 output "backup_s3_bucket_arn" {
   value       = "${module.backup_s3_bucket.s3_bucket_arn}"
-  description = "The backup_s3 bucket ARN"
+  description = "The backup s3 bucket ARN"
 }
