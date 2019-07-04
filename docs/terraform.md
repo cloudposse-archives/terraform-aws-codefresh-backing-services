@@ -6,6 +6,11 @@
 | acm_primary_domain | A domain name for which the certificate should be issued | string | - | yes |
 | acm_san_domains | A list of domains that should be SANs in the issued certificate | list | `<list>` | no |
 | attributes | Additional attributes (e.g. `1`) | list | `<list>` | no |
+| backup_enabled | Set to false to prevent the module from creating any resources | string | `` | no |
+| backup_s3_access_key_name | Backup s3 user IAM access key name for storing in SSM. Default to aws_acces_key_id so chamber exports as AWS_ACCESS_KEY_ID, a standard AWS IAM ENV variable | string | `codefresh_backups_aws_access_key_id` | no |
+| backup_s3_allowed_bucket_actions | List of actions to permit for backup s3 bucket | list | `<list>` | no |
+| backup_s3_secret_key_name | Backup s3 user IAM secret key name for storing in SSM. Default to aws_secret_acces_key so chamber exports as AWS_SECRET_ACCESS_KEY, a standard AWS IAM ENV variable | string | `codefresh_backups_aws_secret_access_key` | no |
+| backup_s3_user_enabled | Set to `true` to create an user with permission to access the backup s3 bucket | string | `` | no |
 | chamber_format | Format to store parameters in SSM, for consumption with `chamber` | string | `/%s/%s` | no |
 | chamber_service | `chamber` service name. See [chamber usage](https://github.com/segmentio/chamber#usage) for more details | string | `` | no |
 | delimiter | Delimiter to be used between `namespace`, `stage`, `name` and `attributes` | string | `-` | no |
@@ -74,6 +79,12 @@
 | aurora_postgres_master_hostname | Aurora Postgres DB Master hostname |
 | aurora_postgres_master_username | Aurora Postgres Username for the master DB user |
 | aurora_postgres_replicas_hostname | Aurora Postgres Replicas hostname |
+| backup_s3_access_key_id | The access key ID for backup user |
+| backup_s3_bucket_arn | The backup s3 bucket ARN |
+| backup_s3_secret_access_key | The secret access key for backup user. This will be written to the state file in plain-text |
+| backup_s3_user_arn | The ARN assigned by AWS for the backup user |
+| backup_s3_user_name | Normalized IAM backup user name |
+| backup_s3_user_unique_id | The backup user unique ID assigned by AWS |
 | documentdb_arn | Amazon Resource Name (ARN) of the DocumentDB cluster |
 | documentdb_cluster_name | DocumentDB Cluster Identifier |
 | documentdb_endpoint | Endpoint of the DocumentDB cluster |
